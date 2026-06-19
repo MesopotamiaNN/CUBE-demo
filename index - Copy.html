@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Cube Studios | استوديو الألعاب والبرامج والأجهزة</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Three.js from CDN -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    
+    <style>
+        /* ==========================================
+           CSS VARIABLES
+           ========================================== */
+        :root {
+            --bg-deep: #050510;
+            --bg-space: #0a0a1a;
+            --primary: #7c3aed;
+            --primary-glow: #a78bfa;
+            --secondary: #06b6d4;
+            --secondary-glow: #22d3ee;
+            --accent: #f0abfc;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 15, 40, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --font-ar: 'Cairo', sans-serif;
+            --font-en: 'Orbitron', monospace;
+            --nav-height: 60px;
+            --mobile-controls-height: 80px;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --duration-fast: 0.3s;
+            --duration-normal: 0.6s;
+            --duration-slow: 1.2s;
+        }
+
+        /* ==========================================
+           RESET & BASE
+           ========================================== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            font-size: 16px;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-ar);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100dvh;
+            width: 100vw;
+            position: fixed;
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* ==========================================
+           CANVAS
+           ========================================== */
+        #canvas-container {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+        }
+
+        #three-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ==========================================
+           LOADING SCREEN
+           ========================================== */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: var(--bg-deep);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-cube {
+            width: 80px;
+            height: 80px;
+            perspective: 200px;
+            margin-bottom: 2rem;
+        }
+
+        .mini-cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: cube-spin 2s infinite linear;
+        }
+
+        .mini-cube .face {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--primary-glow);
+            background: rgba(124, 58, 237, 0.15);
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3), inset 0 0 20px rgba(124, 58, 237, 0.1);
+        }
+
+        .mini-cube .front  { transform: translateZ(40px); }
+        .mini-cube .back   { transform: rotateY(180deg) translateZ(40px); }
+        .mini-cube .right  { transform: rotateY(90deg) translateZ(40px); }
+        .mini-cube .left   { transform: rotateY(-90deg) translateZ(40px); }
+        .mini-cube .top    { transform: rotateX(90deg) translateZ(40px); }
+        .mini-cube .bottom { transform: rotateX(-90deg) translateZ(40px); }
+
+        @keyframes cube-spin {
+            0% { transform: rotateX(-20deg) rotateY(0deg); }
+            100% { transform: rotateX(-20deg) rotateY(360deg); }
+        }
+
+        .loading-text {
+            font-family: var(--font-en);
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .loading-text span { color: var(--primary-glow); }
+
+        .loading-bar {
+            width: 200px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 3px;
+            animation: loading-progress 2.5s var(--ease-out-expo) forwards;
+        }
+
+        @keyframes loading-progress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        /* ==========================================
+           CURSOR GLOW
+           ========================================== */
+        #cursor-glow {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 50;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+            opacity: 0;
+        }
+
+        /* ==========================================
+           DESKTOP NAVIGATION
+           ========================================== */
+        #desktop-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            background: linear-gradient(180deg, rgba(5, 5, 16, 0.95) 0%, rgba(5, 5, 16, 0) 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-brand {
+            font-family: var(--font-en);
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cube-icon-small {
+            font-size: 1.5rem;
+            color: var(--primary-glow);
+            animation: icon-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes icon-pulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .nav-highlight { color: var(--primary-glow); }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .nav-links a {
+            font-family: var(--font-ar);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all var(--duration-fast) var(--ease-out-expo);
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.nav-active {
+            color: var(--text-primary);
+            background: rgba(124, 58, 237, 0.15);
+        }
+
+        .nav-links a.nav-active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2px;
+            background: var(--primary-glow);
+            border-radius: 1px;
+        }
+
+        /* ==========================================
+           MOBILE CONTROLS
+           ========================================== */
+        #mobile-controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.75rem 0.5rem;
+            padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+            background: linear-gradient(0deg, rgba(5, 5, 16, 0.95) 0%, rgba(5, 5, 16, 0.7) 80%, transparent 100%);
+            backdrop-filter: blur(10px);
+            height: var(--mobile-controls-height);
+        }
+
+        .mobile-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 12px;
+            transition: all var(--duration-fast) var(--ease-out-expo);
+            -webkit-tap-highlight-color: transparent;
+            min-width: 56px;
+        }
+
+        .mobile-btn:active { transform: scale(0.9); }
+
+        .mobile-btn.active {
+            color: var(--primary-glow);
+            background: rgba(124, 58, 237, 0.2);
+        }
+
+        .mobile-btn .btn-icon { font-size: 1.3rem; }
+
+        .mobile-btn .btn-label {
+            font-family: var(--font-ar);
+            font-size: 0.65rem;
+            font-weight: 500;
+        }
+
+        /* ==========================================
+           INFO PANEL
+           ========================================== */
+        #info-panel {
+            position: fixed;
+            z-index: 200;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 2rem;
+            color: var(--text-primary);
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.9) translateY(20px);
+            transition: all var(--duration-normal) var(--ease-spring);
+            pointer-events: none;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        #info-panel.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1) translateY(0);
+            pointer-events: all;
+        }
+
+        #close-panel {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--duration-fast);
+        }
+
+        #close-panel:hover { background: rgba(255, 255, 255, 0.2); }
+
+        /* ==========================================
+           PANEL CONTENT STYLES
+           ========================================== */
+        .panel-inner { text-align: center; }
+
+        .panel-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+
+        .panel-title {
+            font-family: var(--font-en);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-glow);
+            margin-bottom: 0.25rem;
+        }
+
+        .panel-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .panel-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .panel-stats {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .stat { text-align: center; }
+
+        .stat-number {
+            display: block;
+            font-family: var(--font-en);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-glow);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .panel-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all var(--duration-fast);
+        }
+
+        .panel-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(124,58,237,0.4); }
+
+        /* Games */
+        .games-list { margin: 1rem 0; }
+        .game-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-align: right;
+        }
+        .game-icon { font-size: 2rem; }
+        .game-card h3 { font-size: 0.9rem; color: var(--text-primary); margin-bottom: 0.2rem; }
+        .game-card p { font-size: 0.7rem; color: var(--text-muted); }
+        .game-tag {
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.65rem;
+            margin-right: auto;
+        }
+
+        /* Software */
+        .software-list { margin: 1rem 0; }
+        .soft-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            text-align: right;
+        }
+        .soft-icon { font-size: 1.5rem; }
+        .soft-item h3 { font-size: 0.85rem; color: var(--text-primary); }
+        .soft-item p { font-size: 0.7rem; color: var(--text-muted); }
+
+        /* Hardware */
+        .hardware-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .hw-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+        .hw-icon { font-size: 2rem; margin-bottom: 0.3rem; }
+        .hw-card h3 { font-size: 0.8rem; color: var(--text-primary); }
+        .hw-card p { font-size: 0.65rem; color: var(--text-muted); }
+
+        /* About */
+        .values {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .value-item {
+            background: rgba(124,58,237,0.1);
+            border-radius: 10px;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        .value-item span { display: block; font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .panel-footer-text { font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; }
+
+        /* Contact */
+        .contact-form { margin: 1rem 0; }
+        .form-group { margin-bottom: 0.75rem; }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: var(--font-ar);
+            font-size: 0.8rem;
+        }
+        .form-group textarea { resize: vertical; }
+        .submit-btn { width: 100%; }
+        .contact-info { margin-top: 1rem; font-size: 0.75rem; color: var(--text-muted); text-align: center; }
+        .contact-info p { margin: 0.3rem 0; }
+
+        /* ==========================================
+           RESPONSIVE
+           ========================================== */
+        @media (max-width: 374px) {
+            #mobile-controls { padding: 0.5rem 0.25rem; height: 70px; }
+            .mobile-btn { padding: 0.3rem; min-width: 44px; }
+            .mobile-btn .btn-icon { font-size: 1.1rem; }
+            .mobile-btn .btn-label { font-size: 0.55rem; }
+            #info-panel { padding: 1.5rem; margin: 0.75rem; border-radius: 16px; max-height: 60vh; }
+        }
+
+        @media (min-width: 375px) and (max-width: 767px) {
+            #desktop-nav { display: none; }
+            #mobile-controls { display: flex; }
+            #info-panel {
+                position: fixed;
+                bottom: calc(var(--mobile-controls-height) + 1rem);
+                left: 1rem;
+                right: 1rem;
+                width: auto;
+                max-height: 50vh;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+            #desktop-nav { display: flex; padding: 1rem 1.5rem; }
+            #mobile-controls { display: none; }
+            .nav-links a { font-size: 0.8rem; padding: 0.4rem 0.75rem; }
+            #info-panel { position: fixed; left: 2rem; bottom: 2rem; width: 380px; max-height: 60vh; }
+        }
+
+        @media (min-width: 1024px) {
+            #desktop-nav { display: flex; padding: 1.5rem 3rem; }
+            #mobile-controls { display: none; }
+            #info-panel { position: fixed; left: 3rem; bottom: 3rem; width: 420px; max-height: 65vh; }
+        }
+
+        @media (min-width: 1440px) {
+            #desktop-nav { padding: 2rem 5rem; }
+            #info-panel { width: 500px; left: 5rem; bottom: 4rem; }
+        }
+
+        @media (min-width: 1920px) {
+            html { font-size: 18px; }
+            #info-panel { width: 560px; }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Canvas Container -->
+    <div id="canvas-container">
+        <canvas id="three-canvas"></canvas>
+    </div>
+    
+    <!-- Cursor Glow -->
+    <div id="cursor-glow"></div>
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-cube">
+            <div class="mini-cube">
+                <div class="face front"></div>
+                <div class="face back"></div>
+                <div class="face right"></div>
+                <div class="face left"></div>
+                <div class="face top"></div>
+                <div class="face bottom"></div>
+            </div>
+        </div>
+        <p class="loading-text">CUBE <span>STUDIOS</span></p>
+        <div class="loading-bar"><div class="loading-progress"></div></div>
+    </div>
+    
+    <!-- Desktop Navigation -->
+    <nav id="desktop-nav">
+        <div class="nav-brand">
+            <span class="cube-icon-small">◻</span>
+            <span>CUBE <span class="nav-highlight">STUDIOS</span></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" data-face="0" class="nav-active">الرئيسية</a></li>
+            <li><a href="#" data-face="1">الألعاب</a></li>
+            <li><a href="#" data-face="2">البرامج</a></li>
+            <li><a href="#" data-face="3">الأجهزة</a></li>
+            <li><a href="#" data-face="4">عن الشركة</a></li>
+            <li><a href="#" data-face="5">اتصل بنا</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Mobile Controls -->
+    <div id="mobile-controls">
+        <button class="mobile-btn active" data-face="0"><span class="btn-icon">🏠</span><span class="btn-label">الرئيسية</span></button>
+        <button class="mobile-btn" data-face="1"><span class="btn-icon">🎮</span><span class="btn-label">الألعاب</span></button>
+        <button class="mobile-btn" data-face="2"><span class="btn-icon">💻</span><span class="btn-label">البرامج</span></button>
+        <button class="mobile-btn" data-face="3"><span class="btn-icon">🖥️</span><span class="btn-label">الأجهزة</span></button>
+        <button class="mobile-btn" data-face="4"><span class="btn-icon">ℹ️</span><span class="btn-label">عن الشركة</span></button>
+        <button class="mobile-btn" data-face="5"><span class="btn-icon">📧</span><span class="btn-label">اتصل بنا</span></button>
+    </div>
+    
+    <!-- Info Panel -->
+    <div id="info-panel">
+        <div class="panel-content" id="panel-content"></div>
+        <button id="close-panel" aria-label="إغلاق">✕</button>
+    </div>
+
+    <!-- Main Script -->
+    <script type="module">
+        // ==========================================
+        // IMPORTS
+        // ==========================================
+        import * as THREE from 'three';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+        import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+        import { RGBShiftShader } from 'three/addons/shaders/RGBShiftShader.js';
+
+        // ==========================================
+        // DOM ELEMENTS
+        // ==========================================
+        const canvas = document.getElementById('three-canvas');
+        const container = document.getElementById('canvas-container');
+        const loadingScreen = document.getElementById('loading-screen');
+        const infoPanel = document.getElementById('info-panel');
+        const panelContent = document.getElementById('panel-content');
+        const closePanelBtn = document.getElementById('close-panel');
+        const cursorGlow = document.getElementById('cursor-glow');
+        const mobileBtns = document.querySelectorAll('.mobile-btn');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        // ==========================================
+        // SCENE SETUP
+        // ==========================================
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.set(0, 1.5, 8);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+        // Post Processing
+        const composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
+        const bloomPass = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.5, 0.4, 0.85);
+        composer.addPass(bloomPass);
+        const rgbShiftPass = new ShaderPass(RGBShiftShader);
+        rgbShiftPass.uniforms['amount'].value = 0.0015;
+        composer.addPass(rgbShiftPass);
+        rgbShiftPass.renderToScreen = true;
+
+        // Lighting
+        scene.add(new THREE.AmbientLight(0x1a1a3e, 1.5));
+        const pointLight1 = new THREE.PointLight(0x7c3aed, 30, 15);
+        pointLight1.position.set(3, 2, 3);
+        scene.add(pointLight1);
+        const pointLight2 = new THREE.PointLight(0x06b6d4, 20, 12);
+        pointLight2.position.set(-3, -1, -2);
+        scene.add(pointLight2);
+
+        // Stars Background
+        const starsGeometry = new THREE.BufferGeometry();
+        const starsCount = 2000;
+        const starsPositions = new Float32Array(starsCount * 3);
+        for (let i = 0; i < starsCount * 3; i += 3) {
+            starsPositions[i] = (Math.random() - 0.5) * 30;
+            starsPositions[i + 1] = (Math.random() - 0.5) * 20;
+            starsPositions[i + 2] = (Math.random() - 0.5) * 15 - 5;
+        }
+        starsGeometry.setAttribute('position', new THREE.BufferAttribute(starsPositions, 3));
+        const stars = new THREE.Points(starsGeometry, new THREE.PointsMaterial({
+            color: 0xffffff, size: 0.02, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false
+        }));
+        scene.add(stars);
+
+        // ==========================================
+        // CREATE CUBE
+        // ==========================================
+        function createCube() {
+            const group = new THREE.Group();
+            const size = 2.5;
+            const faceNames = [
+                { ar: 'الرئيسية', en: 'HOME', icon: '🏠', color: '#7c3aed' },
+                { ar: 'الألعاب', en: 'GAMES', icon: '🎮', color: '#06b6d4' },
+                { ar: 'البرامج', en: 'SOFTWARE', icon: '💻', color: '#8b5cf6' },
+                { ar: 'الأجهزة', en: 'HARDWARE', icon: '🖥️', color: '#22d3ee' },
+                { ar: 'عن الشركة', en: 'ABOUT', icon: '⬡', color: '#a78bfa' },
+                { ar: 'اتصل بنا', en: 'CONTACT', icon: '📧', color: '#f0abfc' }
+            ];
+
+            const faceMaterials = faceNames.map((face) => {
+                const c = document.createElement('canvas');
+                c.width = 512; c.height = 512;
+                const ctx = c.getContext('2d');
+                const grad = ctx.createRadialGradient(256, 256, 50, 256, 256, 400);
+                grad.addColorStop(0, 'rgba(20, 20, 50, 0.9)');
+                grad.addColorStop(0.7, 'rgba(10, 10, 30, 0.95)');
+                grad.addColorStop(1, 'rgba(5, 5, 16, 1)');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, 512, 512);
+                ctx.strokeStyle = 'rgba(124, 58, 237, 0.08)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < 512; i += 32) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 512); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(512, i); ctx.stroke(); }
+                const bGrad = ctx.createLinearGradient(0, 0, 512, 512);
+                bGrad.addColorStop(0, face.color); bGrad.addColorStop(0.5, 'rgba(255,255,255,0.1)'); bGrad.addColorStop(1, face.color);
+                ctx.strokeStyle = bGrad; ctx.lineWidth = 3; ctx.strokeRect(4, 4, 504, 504);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)'; ctx.lineWidth = 1; ctx.strokeRect(20, 20, 472, 472);
+                ctx.font = '80px Arial'; ctx.textAlign = 'center'; ctx.fillText(face.icon, 256, 200);
+                ctx.fillStyle = '#ffffff'; ctx.font = 'bold 48px Cairo, Arial'; ctx.fillText(face.ar, 256, 300);
+                ctx.fillStyle = face.color; ctx.font = '28px Orbitron, monospace'; ctx.fillText(face.en, 256, 360);
+                ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '18px Orbitron, monospace'; ctx.fillText('CUBE STUDIOS', 256, 440);
+                const texture = new THREE.CanvasTexture(c);
+                texture.colorSpace = THREE.SRGBColorSpace;
+                return new THREE.MeshStandardMaterial({ map: texture, roughness: 0.3, metalness: 0.1, transparent: true, opacity: 0.95, side: THREE.DoubleSide });
+            });
+
+            const cubeGeo = new THREE.BoxGeometry(size, size, size);
+            const cube = new THREE.Mesh(cubeGeo, faceMaterials);
+            group.add(cube);
+
+            const edgesGeo = new THREE.EdgesGeometry(cubeGeo);
+            group.add(new THREE.LineSegments(edgesGeo, new THREE.LineBasicMaterial({ color: 0x7c3aed, transparent: true, opacity: 0.6 })));
+
+            const outerGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(size + 0.15, size + 0.15, size + 0.15));
+            group.add(new THREE.LineSegments(outerGeo, new THREE.LineBasicMaterial({ color: 0xa78bfa, transparent: true, opacity: 0.25 })));
+
+            const corners = [
+                [-size/2,-size/2,-size/2],[size/2,-size/2,-size/2],[-size/2,size/2,-size/2],[size/2,size/2,-size/2],
+                [-size/2,-size/2,size/2],[size/2,-size/2,size/2],[-size/2,size/2,size/2],[size/2,size/2,size/2]
+            ];
+            const glowGeo = new THREE.SphereGeometry(0.06, 8, 8);
+            const glowMat = new THREE.MeshBasicMaterial({ color: 0xc4b5fd, transparent: true, opacity: 0.9 });
+            corners.forEach(([x,y,z]) => { const g = new THREE.Mesh(glowGeo, glowMat); g.position.set(x,y,z); group.add(g); });
+
+            // Logo Sprite
+            const logoCanvas = document.createElement('canvas');
+            logoCanvas.width = 256; logoCanvas.height = 128;
+            const lCtx = logoCanvas.getContext('2d');
+            lCtx.fillStyle = '#ffffff'; lCtx.font = 'bold 36px Orbitron, monospace'; lCtx.textAlign = 'center'; lCtx.fillText('CUBE', 128, 45);
+            lCtx.fillStyle = '#a78bfa'; lCtx.fillText('STUDIOS', 128, 90);
+            const logoTexture = new THREE.CanvasTexture(logoCanvas);
+            logoTexture.colorSpace = THREE.SRGBColorSpace;
+            const logoSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: logoTexture, transparent: true, opacity: 0.8, depthTest: false, depthWrite: false }));
+            logoSprite.position.set(0, size/2 + 0.8, 0);
+            logoSprite.scale.set(2.5, 1.25, 1);
+            group.add(logoSprite);
+
+            // Rings
+            for (let i = 0; i < 3; i++) {
+                const ring = new THREE.Mesh(
+                    new THREE.TorusGeometry(size/2 + 0.3 + i * 0.15, 0.015, 16, 100),
+                    new THREE.MeshBasicMaterial({ color: [0x7c3aed, 0x06b6d4, 0xa78bfa][i], transparent: true, opacity: 0.4 - i * 0.1, depthTest: false, depthWrite: false })
+                );
+                ring.rotation.x = Math.PI / 2;
+                ring.userData = { speed: 0.2 + i * 0.1, opacity: 0.4 - i * 0.1 };
+                group.add(ring);
+            }
+
+            group.userData = { logo: logoSprite, rings: group.children.filter(c => c.geometry?.type === 'TorusGeometry'), cornerGlows: group.children.filter(c => c.geometry?.type === 'SphereGeometry') };
+            return group;
+        }
+
+        // ==========================================
+        // CREATE PARTICLES
+        // ==========================================
+        function createParticleSystems() {
+            const group = new THREE.Group();
+
+            // Orbital
+            const oCount = 3000;
+            const oGeo = new THREE.BufferGeometry();
+            const oPos = new Float32Array(oCount * 3);
+            const oColors = new Float32Array(oCount * 3);
+            const oData = [];
+            for (let i = 0; i < oCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = 1.8 + Math.random() * 2.5;
+                const height = (Math.random() - 0.5) * 4;
+                oPos[i*3] = Math.cos(angle) * radius;
+                oPos[i*3+1] = height;
+                oPos[i*3+2] = Math.sin(angle) * radius;
+                const mix = Math.random();
+                oColors[i*3] = 0.3 + mix * 0.2;
+                oColors[i*3+1] = 0.1 + mix * 0.5;
+                oColors[i*3+2] = 0.6 + mix * 0.4;
+                oData.push({ angle, radius, height, speed: 0.1 + Math.random() * 0.4, vSpeed: (Math.random() - 0.5) * 0.3 });
+            }
+            oGeo.setAttribute('position', new THREE.BufferAttribute(oPos, 3));
+            oGeo.setAttribute('color', new THREE.BufferAttribute(oColors, 3));
+            const oPoints = new THREE.Points(oGeo, new THREE.PointsMaterial({ size: 0.03, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0.7 }));
+            oPoints.userData = { data: oData, pos: oPos, type: 'orbital' };
+            group.add(oPoints);
+
+            // Core
+            const cCount = 500;
+            const cGeo = new THREE.BufferGeometry();
+            const cPos = new Float32Array(cCount * 3);
+            const cColors = new Float32Array(cCount * 3);
+            const cData = [];
+            for (let i = 0; i < cCount; i++) {
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                const r = Math.random() * 1.0;
+                cPos[i*3] = Math.sin(phi) * Math.cos(theta) * r;
+                cPos[i*3+1] = Math.sin(phi) * Math.sin(theta) * r;
+                cPos[i*3+2] = Math.cos(phi) * r;
+                cColors[i*3] = 0.8; cColors[i*3+1] = 0.7; cColors[i*3+2] = 1.0;
+                cData.push({ bx: cPos[i*3], by: cPos[i*3+1], bz: cPos[i*3+2], phase: Math.random() * Math.PI * 2, speed: 0.3 + Math.random() * 0.7, amp: 0.05 + Math.random() * 0.15 });
+            }
+            cGeo.setAttribute('position', new THREE.BufferAttribute(cPos, 3));
+            cGeo.setAttribute('color', new THREE.BufferAttribute(cColors, 3));
+            const cPoints = new THREE.Points(cGeo, new THREE.PointsMaterial({ size: 0.05, vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false, transparent: true, opacity: 0.9 }));
+            cPoints.userData = { data: cData, pos: cPos, type: 'core' };
+            group.add(cPoints);
+
+            // Energy Lines
+            const lCount = 50;
+            const lGeo = new THREE.BufferGeometry();
+            const lPos = new Float32Array(lCount * 6);
+            const lData = [];
+            for (let i = 0; i < lCount; i++) {
+                const a1 = Math.random() * Math.PI * 2;
+                const a2 = a1 + (Math.random() - 0.5) * 1.5;
+                const r = 1.5 + Math.random() * 2;
+                lPos[i*6] = Math.cos(a1) * r;
+                lPos[i*6+1] = (Math.random() - 0.5) * 3;
+                lPos[i*6+2] = Math.sin(a1) * r;
+                lPos[i*6+3] = Math.cos(a2) * r;
+                lPos[i*6+4] = (Math.random() - 0.5) * 3;
+                lPos[i*6+5] = Math.sin(a2) * r;
+                lData.push({ speed: 0.2 + Math.random() * 0.8, phase: Math.random() * Math.PI * 2 });
+            }
+            lGeo.setAttribute('position', new THREE.BufferAttribute(lPos, 3));
+            const lLines = new THREE.LineSegments(lGeo, new THREE.LineBasicMaterial({ color: 0x7c3aed, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false }));
+            lLines.userData = { data: lData, pos: lPos, type: 'lines' };
+            group.add(lLines);
+
+            // Burst container
+            const burstGroup = new THREE.Group();
+            burstGroup.visible = false;
+            burstGroup.userData = { type: 'burst', active: false, particles: [], startTime: 0 };
+            group.add(burstGroup);
+
+            group.userData.update = function(time) {
+                const t = time * 0.001;
+                if (oPoints.userData.type === 'orbital') {
+                    const d = oPoints.userData.data, p = oPoints.userData.pos;
+                    for (let i = 0; i < d.length; i++) {
+                        d[i].angle += d[i].speed * 0.005;
+                        d[i].height += Math.sin(t + d[i].vSpeed) * 0.002;
+                        if (Math.abs(d[i].height) > 2.5) d[i].vSpeed *= -1;
+                        p[i*3] = Math.cos(d[i].angle) * d[i].radius;
+                        p[i*3+1] = d[i].height;
+                        p[i*3+2] = Math.sin(d[i].angle) * d[i].radius;
+                    }
+                    oPoints.geometry.attributes.position.needsUpdate = true;
+                }
+                if (cPoints.userData.type === 'core') {
+                    const d = cPoints.userData.data, p = cPoints.userData.pos;
+                    for (let i = 0; i < d.length; i++) {
+                        const w = Math.sin(t * d[i].speed + d[i].phase) * d[i].amp;
+                        p[i*3] = d[i].bx + w;
+                        p[i*3+1] = d[i].by + w * 1.3;
+                        p[i*3+2] = d[i].bz + w * 0.7;
+                    }
+                    cPoints.geometry.attributes.position.needsUpdate = true;
+                }
+                if (lLines.userData.type === 'lines') lLines.material.opacity = 0.1 + Math.sin(t * 0.7) * 0.05;
+                if (burstGroup.userData.active) {
+                    if (t - burstGroup.userData.startTime > 2) { burstGroup.visible = false; burstGroup.userData.active = false; burstGroup.clear(); }
+                    else burstGroup.children.forEach(p => { p.position.x += p.userData.vx * 0.03; p.position.y += p.userData.vy * 0.03; p.position.z += p.userData.vz * 0.03; p.material.opacity = Math.max(0, p.material.opacity - 0.01); });
+                }
+            };
+
+            group.userData.createBurst = function(position, color = 0xa78bfa) {
+                const bg = group.children.find(c => c.userData?.type === 'burst');
+                if (!bg) return;
+                bg.clear(); bg.visible = true; bg.userData.active = true; bg.userData.startTime = performance.now() * 0.001;
+                const geo = new THREE.SphereGeometry(0.02, 4, 4);
+                for (let i = 0; i < 100; i++) {
+                    const mat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false });
+                    const p = new THREE.Mesh(geo, mat);
+                    p.position.copy(position);
+                    p.userData = { vx: (Math.random()-0.5)*3, vy: (Math.random()-0.5)*3, vz: (Math.random()-0.5)*3 };
+                    bg.add(p);
+                }
+            };
+
+            return group;
+        }
+
+        // ==========================================
+        // CONTENT
+        // ==========================================
+        function getFaceContent(idx) {
+            const contents = [
+                `<div class="panel-inner"><div class="panel-icon">🏠</div><h2 class="panel-title">Cube Studios</h2><p class="panel-subtitle">نصنع المستقبل الرقمي</p><p class="panel-description">نحن استوديو إبداعي متكامل يجمع بين تطوير الألعاب الغامرة، والبرمجيات المتطورة، والأجهزة المبتكرة.</p><div class="panel-stats"><div class="stat"><span class="stat-number">+50</span><span class="stat-label">مشروع</span></div><div class="stat"><span class="stat-number">+30</span><span class="stat-label">عميل</span></div><div class="stat"><span class="stat-number">7</span><span class="stat-label">سنوات</span></div></div><a href="#" class="panel-btn" data-action="1">🎮 استكشف ألعابنا</a></div>`,
+                `<div class="panel-inner"><div class="panel-icon">🎮</div><h2 class="panel-title">الألعاب</h2><p class="panel-subtitle">عوالم غامرة</p><div class="games-list"><div class="game-card"><span class="game-icon">🚀</span><div><h3>Star Voyagers</h3><p>استكشاف فضائي VR</p></div><span class="game-tag">VR</span></div><div class="game-card"><span class="game-icon">⚔️</span><div><h3>Shadow Realms</h3><p>تقمص أدوار مظلم</p></div><span class="game-tag">RPG</span></div><div class="game-card"><span class="game-icon">🏎️</span><div><h3>Neon Drift</h3><p>سباقات نيون</p></div><span class="game-tag">Racing</span></div></div><a href="#" class="panel-btn">🎮 كل الألعاب</a></div>`,
+                `<div class="panel-inner"><div class="panel-icon">💻</div><h2 class="panel-title">البرامج</h2><p class="panel-subtitle">حلول ذكية</p><div class="software-list"><div class="soft-item"><span class="soft-icon">🤖</span><div><h3>Cube AI Engine</h3><p>محرك ذكاء اصطناعي</p></div></div><div class="soft-item"><span class="soft-icon">📊</span><div><h3>DataViz Pro</h3><p>تحليل بيانات 3D</p></div></div><div class="soft-item"><span class="soft-icon">🔒</span><div><h3>SecureCube</h3><p>نظام تشفير متقدم</p></div></div></div><a href="#" class="panel-btn">💻 كل البرامج</a></div>`,
+                `<div class="panel-inner"><div class="panel-icon">🖥️</div><h2 class="panel-title">الأجهزة</h2><p class="panel-subtitle">عتاد المستقبل</p><div class="hardware-grid"><div class="hw-card"><div class="hw-icon">🎧</div><h3>Cube Sonic</h3><p>سماعة محيطي</p></div><div class="hw-card"><div class="hw-icon">⌨️</div><h3>Cube Mech</h3><p>لوحة ميكانيكية</p></div><div class="hw-card"><div class="hw-icon">🖱️</div><h3>Cube Pulse</h3><p>فأرة 16K</p></div><div class="hw-card"><div class="hw-icon">💡</div><h3>Cube Light</h3><p>إضاءة RGB</p></div></div><a href="#" class="panel-btn">🖥️ متجر الأجهزة</a></div>`,
+                `<div class="panel-inner"><div class="panel-icon">⬡</div><h2 class="panel-title">عن الشركة</h2><p class="panel-subtitle">قصتنا</p><p class="panel-description">تأسست Cube Studios عام 2018 على يد مبدعين ومهندسين طموحين. بدأنا كفريق صغير واليوم نحن منصة إبداعية متكاملة.</p><div class="values"><div class="value-item"><span>💎</span>إبداع بلا حدود</div><div class="value-item"><span>⚡</span>أداء فائق</div><div class="value-item"><span>🤝</span>شراكة حقيقية</div><div class="value-item"><span>🔮</span>رؤية مستقبلية</div></div><p class="panel-footer-text">المقر: دبي • الرياض • القاهرة</p></div>`,
+                `<div class="panel-inner"><div class="panel-icon">📧</div><h2 class="panel-title">اتصل بنا</h2><p class="panel-subtitle">ننتظر رسالتك</p><form class="contact-form"><div class="form-group"><input type="text" placeholder="الاسم الكامل"></div><div class="form-group"><input type="email" placeholder="البريد الإلكتروني"></div><div class="form-group"><select><option>نوع الاستفسار</option><option>تطوير لعبة</option><option>برنامج مخصص</option><option>جهاز</option><option>شراكة</option></select></div><div class="form-group"><textarea placeholder="رسالتك..." rows="3"></textarea></div><button type="submit" class="panel-btn submit-btn">🚀 أرسل</button></form><div class="contact-info"><p>📧 info@cubestudios.com</p><p>📱 +966 50 000 0000</p></div></div>`
+            ];
+            return contents[idx] || '';
+        }
+
+        // ==========================================
+        // INITIALIZE
+        // ==========================================
+        let mainCube, particleGroup, interactionAPI, currentFace = 0;
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let isDragging = false, prevMouse = { x: 0, y: 0 }, autoRotate = true, hoveredFace = null;
+        let rotVelocity = { x: 0, y: 0 };
+
+        async function init() {
+            mainCube = createCube();
+            scene.add(mainCube);
+            particleGroup = createParticleSystems();
+            scene.add(particleGroup);
+
+            setupInteraction();
+
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                setTimeout(() => loadingScreen.remove(), 800);
+            }, 1500);
+        }
+
+        function setupInteraction() {
+            container.addEventListener('mousemove', (e) => {
+                mouse.x = (e.clientX / container.clientWidth) * 2 - 1;
+                mouse.y = -(e.clientY / container.clientHeight) * 2 + 1;
+                cursorGlow.style.left = e.clientX + 'px';
+                cursorGlow.style.top = e.clientY + 'px';
+                cursorGlow.style.opacity = '1';
+                if (isDragging) {
+                    const dx = e.clientX - prevMouse.x, dy = e.clientY - prevMouse.y;
+                    mainCube.rotation.y += dx * 0.005;
+                    mainCube.rotation.x += dy * 0.005;
+                    rotVelocity.y = dx * 0.005; rotVelocity.x = dy * 0.005;
+                    prevMouse.x = e.clientX; prevMouse.y = e.clientY;
+                    autoRotate = false;
+                }
+                checkHover();
+            });
+
+            container.addEventListener('mousedown', (e) => { isDragging = true; prevMouse.x = e.clientX; prevMouse.y = e.clientY; autoRotate = false; container.style.cursor = 'grabbing'; });
+            container.addEventListener('mouseup', () => { isDragging = false; container.style.cursor = 'grab'; setTimeout(() => { autoRotate = true; }, 2000); });
+            container.addEventListener('click', (e) => { if (Math.abs(e.clientX - prevMouse.x) < 3 && Math.abs(e.clientY - prevMouse.y) < 3) checkClick(); });
+            container.addEventListener('mouseleave', () => { cursorGlow.style.opacity = '0'; container.style.cursor = 'default'; });
+            container.addEventListener('mouseenter', () => { cursorGlow.style.opacity = '1'; container.style.cursor = 'grab'; });
+            container.addEventListener('wheel', (e) => { e.preventDefault(); camera.position.z += e.deltaY * 0.01; camera.position.z = Math.max(4, Math.min(15, camera.position.z)); });
+
+            // Touch
+            let touchPrev = { x: 0, y: 0 }, isTouching = false;
+            container.addEventListener('touchstart', (e) => { if (e.touches.length === 1) { e.preventDefault(); isTouching = true; autoRotate = false; touchPrev.x = e.touches[0].clientX; touchPrev.y = e.touches[0].clientY; } }, { passive: false });
+            container.addEventListener('touchmove', (e) => { if (isTouching && e.touches.length === 1) { e.preventDefault(); const dx = e.touches[0].clientX - touchPrev.x, dy = e.touches[0].clientY - touchPrev.y; mainCube.rotation.y += dx * 0.005; mainCube.rotation.x += dy * 0.005; touchPrev.x = e.touches[0].clientX; touchPrev.y = e.touches[0].clientY; } }, { passive: false });
+            container.addEventListener('touchend', () => { isTouching = false; setTimeout(() => { autoRotate = true; }, 2000); });
+
+            // Buttons
+            mobileBtns.forEach(btn => btn.addEventListener('click', () => onFaceSelect(parseInt(btn.dataset.face))));
+            navLinks.forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); onFaceSelect(parseInt(link.dataset.face)); }));
+            closePanelBtn.addEventListener('click', () => infoPanel.classList.remove('visible'));
+            document.addEventListener('keydown', (e) => {
+                const keys = ['1','2','3','4','5','6']; const idx = keys.indexOf(e.key);
+                if (idx !== -1) onFaceSelect(idx);
+                if (e.key === 'Escape') infoPanel.classList.remove('visible');
+                if (e.key === 'r') { autoRotate = true; mainCube.rotation.set(0,0,0); }
+            });
+        }
+
+        function checkHover() {
+            const mainMesh = mainCube.children.find(c => c.isMesh && c.geometry.type === 'BoxGeometry');
+            if (!mainMesh) return;
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObject(mainMesh);
+            const faceIdx = intersects.length > 0 ? Math.floor(intersects[0].faceIndex / 2) : null;
+            if (faceIdx !== hoveredFace) {
+                if (hoveredFace !== null && mainMesh.material[hoveredFace]) { mainMesh.material[hoveredFace].emissive = new THREE.Color(0); mainMesh.material[hoveredFace].emissiveIntensity = 0; }
+                hoveredFace = faceIdx;
+                if (hoveredFace !== null && mainMesh.material[hoveredFace]) { mainMesh.material[hoveredFace].emissive = new THREE.Color(0x333366); mainMesh.material[hoveredFace].emissiveIntensity = 0.5; container.style.cursor = 'pointer'; }
+                else container.style.cursor = 'grab';
+            }
+        }
+
+        function checkClick() {
+            if (hoveredFace !== null) {
+                const pt = new THREE.Vector3(); raycaster.ray.at(3, pt);
+                if (particleGroup.userData.createBurst) particleGroup.userData.createBurst(pt);
+                onFaceSelect(hoveredFace);
+            }
+        }
+
+        function onFaceSelect(idx) {
+            currentFace = idx;
+            mobileBtns.forEach((b,i) => b.classList.toggle('active', i === idx));
+            navLinks.forEach((l,i) => l.classList.toggle('nav-active', i === idx));
+            panelContent.innerHTML = getFaceContent(idx);
+            infoPanel.classList.add('visible');
+            animateCubeToFace(idx);
+        }
+
+        function animateCubeToFace(idx) {
+            const targets = [
+                { x:0, y:0 }, { x:0, y:Math.PI/2 }, { x:0, y:Math.PI }, { x:0, y:-Math.PI/2 }, { x:-Math.PI/2, y:0 }, { x:Math.PI/2, y:0 }
+            ];
+            const target = targets[idx];
+            const start = { x: mainCube.rotation.x, y: mainCube.rotation.y };
+            const duration = 1200, startTime = performance.now();
+            function anim(time) {
+                const p = Math.min((time - startTime) / duration, 1);
+                const t = p === 0 ? 0 : p === 1 ? 1 : Math.pow(2, -10 * p) * Math.sin((p * 10 - 0.75) * (2*Math.PI)/3) + 1;
+                mainCube.rotation.x = start.x + (target.x - start.x) * t;
+                mainCube.rotation.y = start.y + (target.y - start.y) * t;
+                if (p < 1) requestAnimationFrame(anim);
+            }
+            requestAnimationFrame(anim);
+        }
+
+        // Resize
+        window.addEventListener('resize', () => {
+            const w = container.clientWidth, h = container.clientHeight;
+            camera.aspect = w / h; camera.updateProjectionMatrix();
+            renderer.setSize(w, h); composer.setSize(w, h);
+            bloomPass.resolution.set(w, h);
+            camera.position.z = w < 768 ? 10 : 8;
+            camera.lookAt(0, 0, 0);
+        });
+
+        // ==========================================
+        // ANIMATION LOOP
+        // ==========================================
+        function animate(time) {
+            requestAnimationFrame(animate);
+            const dt = Math.min(0.1, (time - (animate.lastTime || time)) * 0.001);
+            animate.lastTime = time;
+
+            stars.rotation.y += 0.0001;
+            stars.rotation.x += 0.00005;
+
+            if (particleGroup?.userData.update) particleGroup.userData.update(time);
+
+            const pulse = Math.sin(time * 0.001) * 0.2 + 0.8;
+            pointLight1.intensity = 30 * pulse;
+            pointLight2.intensity = 20 * (1.2 - pulse);
+
+            if (autoRotate) mainCube.rotation.y += 0.3 * dt;
+            else if (!isDragging) {
+                mainCube.rotation.y += rotVelocity.y;
+                mainCube.rotation.x += rotVelocity.x;
+                rotVelocity.y *= 0.95; rotVelocity.x *= 0.95;
+            }
+
+            const rings = mainCube.userData.rings;
+            if (rings) rings.forEach(r => r.rotation.z += 0.01);
+
+            const glows = mainCube.userData.cornerGlows;
+            if (glows) { const p = Math.sin(time * 0.003) * 0.3 + 0.7; glows.forEach(g => g.material.opacity = p); }
+
+            composer.render();
+        }
+        animate.lastTime = performance.now();
+
+        // START
+        init().then(() => requestAnimationFrame(animate));
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Cube Studios | استوديو الألعاب والبرامج والأجهزة</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- Three.js Canvas Container -->
+    <div id="canvas-container">
+        <canvas id="three-canvas"></canvas>
+    </div>
+    
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader-cube">
+            <div class="mini-cube">
+                <div class="face front"></div>
+                <div class="face back"></div>
+                <div class="face right"></div>
+                <div class="face left"></div>
+                <div class="face top"></div>
+                <div class="face bottom"></div>
+            </div>
+        </div>
+        <p class="loading-text">CUBE <span>STUDIOS</span></p>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+    
+    <!-- Mobile Controls -->
+    <div id="mobile-controls">
+        <button class="mobile-btn" data-face="0" aria-label="الرئيسية">
+            <span class="btn-icon">🏠</span>
+            <span class="btn-label">الرئيسية</span>
+        </button>
+        <button class="mobile-btn" data-face="1" aria-label="الألعاب">
+            <span class="btn-icon">🎮</span>
+            <span class="btn-label">الألعاب</span>
+        </button>
+        <button class="mobile-btn" data-face="2" aria-label="البرامج">
+            <span class="btn-icon">💻</span>
+            <span class="btn-label">البرامج</span>
+        </button>
+        <button class="mobile-btn" data-face="3" aria-label="الأجهزة">
+            <span class="btn-icon">🖥️</span>
+            <span class="btn-label">الأجهزة</span>
+        </button>
+        <button class="mobile-btn" data-face="4" aria-label="عن الشركة">
+            <span class="btn-icon">ℹ️</span>
+            <span class="btn-label">عن الشركة</span>
+        </button>
+        <button class="mobile-btn" data-face="5" aria-label="اتصل بنا">
+            <span class="btn-icon">📧</span>
+            <span class="btn-label">اتصل بنا</span>
+        </button>
+    </div>
+    
+    <!-- Desktop Navigation -->
+    <nav id="desktop-nav">
+        <div class="nav-brand">
+            <span class="cube-icon-small">◻</span>
+            <span>CUBE <span class="nav-highlight">STUDIOS</span></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" data-face="0" class="nav-active">الرئيسية</a></li>
+            <li><a href="#" data-face="1">الألعاب</a></li>
+            <li><a href="#" data-face="2">البرامج</a></li>
+            <li><a href="#" data-face="3">الأجهزة</a></li>
+            <li><a href="#" data-face="4">عن الشركة</a></li>
+            <li><a href="#" data-face="5">اتصل بنا</a></li>
+        </ul>
+    </nav>
+    
+    <!-- Info Panel (appears when face is selected) -->
+    <div id="info-panel">
+        <div class="panel-content" id="panel-content">
+            <!-- Dynamic content injected by JS -->
+        </div>
+        <button id="close-panel" aria-label="إغلاق">✕</button>
+    </div>
+    
+    <!-- Performance Monitor (hidden in production) -->
+    <div id="perf-monitor" style="display:none;">
+        <span id="fps-counter">60 FPS</span>
+    </div>
+    
+    <!-- Scripts -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

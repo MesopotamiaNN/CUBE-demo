@@ -1,0 +1,118 @@
+/* ===== Responsive Breakpoints ===== */
+
+/* Small phones (iPhone SE, older Androids) */
+@media (max-width: 374px) {
+    #mobile-controls {
+        padding: 0.5rem 0.25rem;
+        height: 70px;
+    }
+    
+    .mobile-btn {
+        padding: 0.3rem;
+        min-width: 44px;
+    }
+    
+    .mobile-btn .btn-icon {
+        font-size: 1.1rem;
+    }
+    
+    .mobile-btn .btn-label {
+        font-size: 0.55rem;
+    }
+    
+    #info-panel {
+        padding: 1.5rem;
+        margin: 0.75rem;
+        border-radius: 16px;
+        max-height: 60vh;
+    }
+}
+
+/* Regular phones (iPhone 14/15, Pixel, Galaxy) */
+@media (min-width: 375px) and (max-width: 767px) {
+    #desktop-nav {
+        display: none;
+    }
+    
+    #mobile-controls {
+        display: flex;
+    }
+    
+    #info-panel {
+        position: fixed;
+        bottom: calc(var(--mobile-controls-height) + 1rem);
+        left: 1rem;
+        right: 1rem;
+        width: auto;
+        max-height: 50vh;
+    }
+}
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+    #desktop-nav {
+        display: flex;
+        padding: 1rem 1.5rem;
+    }
+    
+    #mobile-controls {
+        display: none;
+    }
+    
+    .nav-links a {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.75rem;
+    }
+    
+    #info-panel {
+        position: fixed;
+        left: 2rem;
+        bottom: 2rem;
+        width: 380px;
+        max-height: 60vh;
+    }
+}
+
+/* Desktops and Laptops */
+@media (min-width: 1024px) {
+    #desktop-nav {
+        display: flex;
+        padding: 1.5rem 3rem;
+    }
+    
+    #mobile-controls {
+        display: none;
+    }
+    
+    #info-panel {
+        position: fixed;
+        left: 3rem;
+        bottom: 3rem;
+        width: 420px;
+        max-height: 65vh;
+    }
+}
+
+/* Large Screens (1440p+) */
+@media (min-width: 1440px) {
+    #desktop-nav {
+        padding: 2rem 5rem;
+    }
+    
+    #info-panel {
+        width: 500px;
+        left: 5rem;
+        bottom: 4rem;
+    }
+}
+
+/* Ultra-wide and 4K */
+@media (min-width: 1920px) {
+    html {
+        font-size: 18px;
+    }
+    
+    #info-panel {
+        width: 560px;
+    }
+}
