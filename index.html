@@ -57,7 +57,7 @@
             height: 100dvh;
             width: 100vw;
             position: fixed;
-            touch-action: pan-x pan-y;
+            touch-action: manipulation;
             -webkit-user-select: none;
             user-select: none;
             transition: background 1.5s ease;
@@ -202,22 +202,22 @@
             display: none;
             align-items: center;
             justify-content: space-between;
-            padding: 0.75rem 2rem;
+            padding: 0.6rem 2rem;
             background: linear-gradient(180deg, rgba(5, 5, 16, 0.95) 0%, rgba(5, 5, 16, 0) 100%);
             backdrop-filter: blur(10px);
         }
         .nb {
             font-family: var(--font2);
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.1em;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
             white-space: nowrap;
         }
         .ci {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: var(--pg);
             animation: ip 2s ease-in-out infinite;
         }
@@ -238,14 +238,14 @@
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
         #lt-desk,
         #meso-btn-desk {
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
+            padding: 0.35rem 0.7rem;
+            border-radius: 18px;
             cursor: pointer;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
             backdrop-filter: blur(10px);
             transition: all 0.3s;
@@ -270,10 +270,10 @@
         @keyframes gpulse {
             0%,
             100% {
-                box-shadow: 0 0 12px rgba(212, 160, 23, 0.3);
+                box-shadow: 0 0 10px rgba(212, 160, 23, 0.3);
             }
             50% {
-                box-shadow: 0 0 22px rgba(240, 199, 94, 0.5);
+                box-shadow: 0 0 20px rgba(240, 199, 94, 0.5);
             }
         }
         #meso-btn-desk:hover {
@@ -289,18 +289,17 @@
         .nl {
             list-style: none;
             display: flex;
-            gap: 0.15rem;
-            margin: 0 1rem;
+            gap: 0.1rem;
+            margin: 0 0.5rem;
         }
         .nl a {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
             color: var(--t2);
             text-decoration: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 8px;
+            padding: 0.35rem 0.7rem;
+            border-radius: 6px;
             transition: all 0.3s var(--ease);
-            position: relative;
             white-space: nowrap;
         }
         .nl a:hover,
@@ -314,25 +313,25 @@
             bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 16px;
+            width: 14px;
             height: 2px;
             background: var(--pg);
             border-radius: 1px;
         }
         .top-btns {
             position: fixed;
-            top: 1rem;
-            left: 1rem;
+            top: 0.75rem;
+            left: 0.75rem;
             z-index: 300;
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
         #lt,
         #meso-btn {
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
+            padding: 0.35rem 0.7rem;
+            border-radius: 18px;
             cursor: pointer;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
             backdrop-filter: blur(10px);
             transition: all 0.3s;
@@ -373,8 +372,8 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding: 0.75rem 0.5rem;
-            padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+            padding: 0.6rem 0.3rem;
+            padding-bottom: max(0.6rem, env(safe-area-inset-bottom));
             background: linear-gradient(0deg, rgba(5, 5, 16, 0.95) 0%, rgba(5, 5, 16, 0.7) 80%, transparent 100%);
             backdrop-filter: blur(10px);
             height: var(--mh);
@@ -383,58 +382,29 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.25rem;
+            gap: 0.2rem;
             background: none;
             border: none;
             color: var(--t3);
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 12px;
+            padding: 0.4rem;
+            border-radius: 10px;
             transition: all 0.3s var(--ease);
-            min-width: 52px;
-            animation: fiu 0.6s var(--spring) both;
+            min-width: 48px;
             -webkit-tap-highlight-color: transparent;
         }
-        .mbb:nth-child(1) {
-            animation-delay: 0s;
-        }
-        .mbb:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-        .mbb:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-        .mbb:nth-child(4) {
-            animation-delay: 0.3s;
-        }
-        .mbb:nth-child(5) {
-            animation-delay: 0.4s;
-        }
-        .mbb:nth-child(6) {
-            animation-delay: 0.5s;
-        }
-        @keyframes fiu {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
         .mbb:active {
-            transform: scale(0.9);
+            transform: scale(0.92);
         }
         .mbb.ac {
             color: var(--pg);
             background: rgba(124, 58, 237, 0.2);
         }
         .mbb .bi {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
         .mbb .bl {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             font-weight: 500;
         }
         #pn {
@@ -445,14 +415,14 @@
             border-radius: 20px;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 2rem;
+            padding: 1.5rem;
             color: var(--t1);
             opacity: 0;
             visibility: hidden;
             transform: scale(0.9) translateY(20px);
             transition: all 0.6s var(--spring);
             pointer-events: none;
-            max-height: 70vh;
+            max-height: 65vh;
             overflow-y: auto;
         }
         #pn.vis {
@@ -463,16 +433,16 @@
         }
         #cp {
             position: absolute;
-            top: 1rem;
-            left: 1rem;
+            top: 0.75rem;
+            left: 0.75rem;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--t1);
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -504,7 +474,7 @@
                 box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
             }
             50% {
-                box-shadow: 0 4px 35px rgba(37, 211, 102, 0.7);
+                box-shadow: 0 4px 30px rgba(37, 211, 102, 0.7);
             }
         }
         #wa:hover {
@@ -519,7 +489,7 @@
             text-align: center;
         }
         .pic {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 0.5rem;
             animation: float 3s ease-in-out infinite;
         }
@@ -529,32 +499,32 @@
                 transform: translateY(0);
             }
             50% {
-                transform: translateY(-10px);
+                transform: translateY(-8px);
             }
         }
         .pt {
             font-family: var(--font2);
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--pg);
             margin-bottom: 0.25rem;
         }
         .ps {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--t3);
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
         .pd {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--t2);
-            line-height: 1.6;
-            margin-bottom: 1rem;
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
         }
         .pst {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
-            margin: 1rem 0;
+            gap: 1rem;
+            margin: 0.75rem 0;
         }
         .st {
             text-align: center;
@@ -562,12 +532,12 @@
         .sn {
             display: block;
             font-family: var(--font2);
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--sg);
         }
         .sl {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--t3);
         }
         .pbtn {
@@ -575,56 +545,45 @@
             background: linear-gradient(135deg, var(--p), var(--s));
             color: #fff;
             text-decoration: none;
-            padding: 0.6rem 1.5rem;
-            border-radius: 25px;
-            font-size: 0.85rem;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
             font-weight: 600;
-            margin-top: 1rem;
+            margin-top: 0.75rem;
             border: none;
             cursor: pointer;
             transition: all 0.3s;
         }
         .pbtn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
         }
         .card-list {
-            margin: 1rem 0;
+            margin: 0.75rem 0;
         }
         .card-i {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            padding: 0.6rem;
+            margin-bottom: 0.4rem;
             text-align: right;
             transition: all 0.3s var(--ease);
-            animation: fiu 0.5s var(--spring) both;
-        }
-        .card-i:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-        .card-i:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        .card-i:nth-child(3) {
-            animation-delay: 0.3s;
         }
         .card-i:hover {
             background: rgba(124, 58, 237, 0.08);
             border-color: rgba(124, 58, 237, 0.3);
-            transform: translateX(-5px);
         }
         .card-img {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 8px;
             object-fit: cover;
             float: right;
-            margin-left: 0.75rem;
+            margin-left: 0.6rem;
         }
         .card-info h3 {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--t1);
         }
         .card-info p {
@@ -635,109 +594,77 @@
             display: inline-block;
             background: var(--p);
             color: #fff;
-            padding: 0.2rem 0.5rem;
-            border-radius: 10px;
-            font-size: 0.65rem;
-            margin-top: 0.3rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 8px;
+            font-size: 0.6rem;
+            margin-top: 0.25rem;
         }
         .sg {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin: 1rem 0;
+            gap: 0.4rem;
+            margin: 0.75rem 0;
         }
         .sc {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 0.75rem;
+            border-radius: 10px;
+            padding: 0.6rem;
             text-align: center;
             transition: all 0.3s var(--ease);
-            animation: fiu 0.5s var(--spring) both;
-        }
-        .sc:nth-child(1) {
-            animation-delay: 0s;
-        }
-        .sc:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-        .sc:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-        .sc:nth-child(4) {
-            animation-delay: 0.3s;
-        }
-        .sc:nth-child(5) {
-            animation-delay: 0.4s;
-        }
-        .sc:nth-child(6) {
-            animation-delay: 0.5s;
         }
         .sc:hover {
             background: rgba(124, 58, 237, 0.08);
             border-color: rgba(124, 58, 237, 0.3);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
         .sic {
-            font-size: 2rem;
-            margin-bottom: 0.3rem;
+            font-size: 1.5rem;
+            margin-bottom: 0.2rem;
         }
         .sc h3 {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--t1);
         }
         .sc p {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: var(--t3);
         }
         .vals {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-            margin: 1rem 0;
+            gap: 0.4rem;
+            margin: 0.75rem 0;
         }
         .val {
             background: rgba(124, 58, 237, 0.1);
-            border-radius: 10px;
-            padding: 0.5rem;
-            font-size: 0.8rem;
+            border-radius: 8px;
+            padding: 0.4rem;
+            font-size: 0.75rem;
             text-align: center;
-            animation: fiu 0.5s var(--spring) both;
-        }
-        .val:nth-child(1) {
-            animation-delay: 0s;
-        }
-        .val:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-        .val:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-        .val:nth-child(4) {
-            animation-delay: 0.3s;
         }
         .val span {
             display: block;
-            font-size: 1.5rem;
-            margin-bottom: 0.25rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.15rem;
         }
         .cf {
-            margin: 1rem 0;
+            margin: 0.75rem 0;
         }
         .fg {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.6rem;
         }
         .fg input,
         .fg select,
         .fg textarea {
             width: 100%;
-            padding: 0.6rem 0.75rem;
+            padding: 0.5rem 0.6rem;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
+            border-radius: 8px;
             color: var(--t1);
             font-family: var(--font);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
         .fg textarea {
             resize: vertical;
@@ -748,18 +675,18 @@
         .clinks {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.4rem;
             justify-content: center;
-            margin-top: 1rem;
+            margin-top: 0.75rem;
         }
         .clink {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--t2);
             text-decoration: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
+            padding: 0.35rem 0.7rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
             transition: all 0.3s;
         }
         .clink:hover {
@@ -767,16 +694,16 @@
             color: #fff;
         }
         .logo-img {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             object-fit: contain;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             animation: float 3s ease-in-out infinite;
         }
         .pft {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--t3);
-            margin-top: 1rem;
+            margin-top: 0.75rem;
         }
         .cuneiform-bg {
             position: fixed;
@@ -797,123 +724,71 @@
         .cuneiform-bg.vis {
             opacity: 1;
         }
-        @media(max-width:374px) {
+        @media(min-width:768px) {
+            #dn {
+                display: flex;
+            }
             #mb {
-                padding: 0.5rem 0.25rem;
-                height: 68px;
-            }
-            .mbb {
-                padding: 0.25rem;
-                min-width: 40px;
-            }
-            .mbb .bi {
-                font-size: 1rem;
-            }
-            .mbb .bl {
-                font-size: 0.5rem;
-            }
-            #pn {
-                padding: 1.25rem;
-                margin: 0.5rem;
-                border-radius: 14px;
-                max-height: 55vh;
+                display: none;
             }
             .top-btns {
-                top: 0.5rem;
-                left: 0.5rem;
-                gap: 0.25rem;
-            }
-            #lt,
-            #meso-btn {
-                font-size: 0.6rem;
-                padding: 0.3rem 0.5rem;
+                display: none;
             }
         }
-        @media(min-width:375px) and (max-width:767px) {
+        @media(max-width:767px) {
             #dn {
                 display: none;
             }
             #mb {
                 display: flex;
             }
+            .top-btns {
+                display: flex;
+            }
             #pn {
-                position: fixed;
-                bottom: calc(var(--mh) + 1rem);
-                left: 1rem;
-                right: 1rem;
+                bottom: calc(var(--mh) + 0.75rem);
+                left: 0.75rem;
+                right: 0.75rem;
                 width: auto;
                 max-height: 50vh;
             }
             #wa {
-                bottom: calc(var(--mh) + 1.5rem);
-            }
-            .top-btns {
-                top: 0.75rem;
-                left: 0.75rem;
+                bottom: calc(var(--mh) + 1.25rem);
             }
         }
         @media(min-width:768px) and (max-width:1023px) {
-            #dn {
-                display: flex;
-                padding: 0.6rem 1.2rem;
-            }
-            #mb {
-                display: none;
-            }
-            .nl a {
-                font-size: 0.75rem;
-                padding: 0.3rem 0.6rem;
-            }
             #pn {
-                position: fixed;
+                left: 1.5rem;
+                bottom: 1.5rem;
+                width: 350px;
+                max-height: 55vh;
+            }
+            #wa {
+                bottom: 1.5rem;
+            }
+            #c.shifted {
+                transform: translateX(22%);
+            }
+        }
+        @media(min-width:1024px) {
+            #pn {
                 left: 2rem;
                 bottom: 2rem;
-                width: 370px;
+                width: 400px;
                 max-height: 60vh;
             }
             #wa {
                 bottom: 2rem;
             }
             #c.shifted {
-                transform: translateX(22%);
-            }
-            .top-btns {
-                display: none;
-            }
-        }
-        @media(min-width:1024px) {
-            #dn {
-                display: flex;
-                padding: 0.75rem 2.5rem;
-            }
-            #mb {
-                display: none;
-            }
-            #pn {
-                position: fixed;
-                left: 3rem;
-                bottom: 3rem;
-                width: 420px;
-                max-height: 65vh;
-            }
-            #wa {
-                bottom: 3rem;
-            }
-            #c.shifted {
                 transform: translateX(24%);
-            }
-            .top-btns {
-                display: none;
             }
         }
         @media(min-width:1440px) {
-            #dn {
-                padding: 1rem 4rem;
-            }
             #pn {
-                width: 500px;
-                left: 5rem;
-                bottom: 4rem;
+                width: 460px;
+                left: 3rem;
+                bottom: 3rem;
             }
         }
     </style>
@@ -949,7 +824,8 @@
         <div class="nav-right">
             <button id="lt-desk">EN</button>
             <button id="meso-btn-desk">🏛️ Mesopotamia</button>
-        </div></nav>
+        </div>
+    </nav>
     <div id="mb">
         <button class="mbb ac" data-f="0"><span class="bi">🏠</span><span class="bl">الرئيسية</span></button>
         <button class="mbb" data-f="1"><span class="bi">🎮</span><span class="bl">الألعاب</span></button>
@@ -980,15 +856,10 @@
         const cuneiformBg = document.getElementById('cuneiform-bg');
         const mb = document.querySelectorAll('.mbb');
         const nl = document.querySelectorAll('.nl a');
-
         const lt = document.getElementById('lt');
         const mesoBtn = document.getElementById('meso-btn');
         const ltDesk = document.getElementById('lt-desk');
         const mesoBtnDesk = document.getElementById('meso-btn-desk');
-
-        function getLangBtn() { return window.innerWidth < 768 ? lt : ltDesk; }
-
-        function getMesoBtn() { return window.innerWidth < 768 ? mesoBtn : mesoBtnDesk; }
 
         let ac = null;
 
@@ -1003,7 +874,7 @@
             o.type = type;
             o.frequency.setValueAtTime(freq, ac.currentTime);
             o.frequency.exponentialRampToValueAtTime(freq * 0.5, ac.currentTime + dur);
-            g.gain.setValueAtTime(0.25, ac.currentTime);
+            g.gain.setValueAtTime(0.2, ac.currentTime);
             g.gain.exponentialRampToValueAtTime(0.01, ac.currentTime + dur);
             o.start(ac.currentTime);
             o.stop(ac.currentTime + dur);
@@ -1011,10 +882,10 @@
 
         function sw() {
             if (!ac) return;
-            const bs = ac.sampleRate * 0.25;
+            const bs = ac.sampleRate * 0.2;
             const b = ac.createBuffer(1, bs, ac.sampleRate);
             const d = b.getChannelData(0);
-            for (let i = 0; i < bs; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bs * 0.25)) * 0.12;
+            for (let i = 0; i < bs; i++) d[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bs * 0.2)) * 0.1;
             const s = ac.createBufferSource();
             s.buffer = b;
             const f = ac.createBiquadFilter();
@@ -1025,18 +896,18 @@
             s.start();
         }
 
-        function vb(dur = 30) { if (navigator.vibrate) navigator.vibrate(dur); }
+        function vb(dur = 20) { if (navigator.vibrate) navigator.vibrate(dur); }
 
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x000510);
         scene.fog = new THREE.FogExp2(0x000510, 0.00015);
 
-        const cam = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+        const cam = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
         cam.position.set(0, 1.5, 8);
         cam.lookAt(0, 0, 0);
 
         const rnd = new THREE.WebGLRenderer({ canvas: cc, antialias: true, alpha: true, powerPreference: 'high-performance' });
-        rnd.setSize(container.clientWidth, container.clientHeight);
+        rnd.setSize(window.innerWidth, window.innerHeight);
         rnd.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         rnd.toneMapping = THREE.ACESFilmicToneMapping;
         rnd.toneMappingExposure = 1.2;
@@ -1044,7 +915,7 @@
 
         const comp = new EffectComposer(rnd);
         comp.addPass(new RenderPass(scene, cam));
-        const blm = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.5, 0.4, 0.85);
+        const blm = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.5, 0.4, 0.85);
         comp.addPass(blm);
         const rgb = new ShaderPass(RGBShiftShader);
         rgb.uniforms['amount'].value = 0.0015;
@@ -1115,26 +986,23 @@
             const size = 2.4;
             const subSize = size / 3;
 
-            const whiteGlass = new THREE.MeshPhysicalMaterial({
+            const whiteMat = new THREE.MeshStandardMaterial({
                 color: 0xffffff,
-                roughness: 0.1,
-                metalness: 0.01,
+                roughness: 0.2,
+                metalness: 0.05,
                 transparent: true,
-                opacity: 0.45,
-                clearcoat: 0.5,
-                clearcoatRoughness: 0.1,
-                envMapIntensity: 0.6
+                opacity: 0.55
             });
 
             for (let x = -1; x <= 1; x++) {
                 for (let y = -1; y <= 1; y++) {
                     for (let z = -1; z <= 1; z++) {
                         const geo = new THREE.BoxGeometry(subSize * 0.9, subSize * 0.9, subSize * 0.9);
-                        const cubelet = new THREE.Mesh(geo, whiteGlass.clone());
+                        const cubelet = new THREE.Mesh(geo, whiteMat.clone());
                         cubelet.position.set(x * subSize, y * subSize, z * subSize);
                         const egeo = new THREE.EdgesGeometry(geo);
                         const edge = new THREE.LineSegments(egeo, new THREE.LineBasicMaterial({ color: 0x111111,
-                            linewidth: 2, transparent: true, opacity: 0.9 }));
+                            transparent: true, opacity: 0.9 }));
                         cubelet.add(edge);
                         group.add(cubelet);
                     }
@@ -1166,7 +1034,7 @@
                 ctx.font = 'bold 100px Cairo, Arial';
                 ctx.fillText(f.ar, 512, 560);
                 ctx.fillStyle = f.color;
-                ctx.font = 'bold 50px Orbitron, monospace';
+                ctx.font = 'bold 50px Orbitron,monospace';
                 ctx.fillText(f.en, 512, 680);
                 const tex = new THREE.CanvasTexture(c);
                 tex.colorSpace = THREE.SRGBColorSpace;
@@ -1208,7 +1076,7 @@
 
             const outerGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(size + 0.2, size + 0.2, size + 0.2));
             const outerEdge = new THREE.LineSegments(outerGeo, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true,
-                opacity: 0.3, linewidth: 1 }));
+                opacity: 0.3 }));
             group.add(outerEdge);
 
             const corners = [
@@ -1403,18 +1271,18 @@
         function getContent(idx) {
             const ar = [
                 `<div class="pi"><img src="images/logo.png" alt="Cube Studios" class="logo-img" onerror="this.style.display='none'"><div class="pic">🏠</div><h2 class="pt">Cube Studios</h2><p class="ps">استوديو إبداعي متكامل</p><p class="pd">نصنع ألعاباً متطورة، أجهزة مبتكرة، وبرمجيات احترافية.</p><div class="pst"><div class="st"><span class="sn">+5</span><span class="sl">سنوات خبرة</span></div><div class="st"><span class="sn">Elyctro</span><span class="sl">لعبة 3D</span></div><div class="st"><span class="sn">2</span><span class="sl">أجهزة</span></div></div><p class="pft">🇮🇶 العراق</p></div>`,
-                `<div class="pi"><div class="pic">🎮</div><h2 class="pt">الألعاب</h2><p class="ps">عوالم غامرة بتقنية متقدمة</p><div class="card-list"><div class="card-i"><img src="images/elyctro.png" alt="Elyctro" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Elyctro</h3><p>لعبة منصات ثلاثية الأبعاد متقدمة برسوم قوية وبيئات غامرة</p><span class="card-tag">3D Platformer</span></div></div></div><p class="pft">المزيد من الألعاب قيد التطوير</p></div>`,
-                `<div class="pi"><div class="pic">📱</div><h2 class="pt">الأجهزة</h2><p class="ps">أجهزة ذكية للمؤسسات</p><div class="card-list"><div class="card-i"><img src="images/cubeos.png" alt="Cube OS" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Cube OS</h3><p>جهاز لوحي متطور مع قارئ RFID مدمج</p><span class="card-tag">RFID</span></div></div><div class="card-i"><img src="images/ethion.png" alt="Ethion" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Ethion</h3><p>SPS — نظام طباعة آمن</p><span class="card-tag">SPS</span></div></div></div></div>`,
-                `<div class="pi"><div class="pic">⚙️</div><h2 class="pt">الخدمات والبرامج</h2><p class="ps">حلول تقنية متكاملة</p><div class="sg"><div class="sc"><div class="sic">🎥</div><h3>محتوى إعلاني 3D</h3><p>فيديوهات وشخصيات</p></div><div class="sc"><div class="sic">🎨</div><h3>تصاميم سوشيال ميديا</h3><p>بوستات وهويات</p></div><div class="sc"><div class="sic">🥽</div><h3>واقع افتراضي VR</h3><p>تجارب تفاعلية</p></div><div class="sc"><div class="sic">🏗️</div><h3>محاكاة أبنية</h3><p>تجول قبل البناء</p></div><div class="sc"><div class="sic">💻</div><h3>صناعة البرمجيات</h3><p>تطوير حسب الطلب</p></div><div class="sc"><div class="sic">🔧</div><h3>استشارات تقنية</h3><p>حلول للشركات</p></div></div><p class="pft">جميع الخدمات متوفرة ✅</p></div>`,
-                `<div class="pi"><img src="images/logo.png" alt="Cube Studios" class="logo-img" onerror="this.style.display='none'"><div class="pic">⬡</div><h2 class="pt">عن Cube Studios</h2><p class="ps">مطور Solo يصنع الفرق</p><p class="pd">شركة تقنية عراقية متخصصة في الألعاب والأجهزة والبرمجيات. أديرها بنفسي — شغوف بالتقنية والإبداع.</p><div class="vals"><div class="val"><span>💎</span>إبداع</div><div class="val"><span>⚡</span>جودة</div><div class="val"><span>🎯</span>دقة</div><div class="val"><span>🚀</span>طموح</div></div><p class="pft">🇮🇶 العراق</p></div>`,
+                `<div class="pi"><div class="pic">🎮</div><h2 class="pt">الألعاب</h2><p class="ps">عوالم غامرة</p><div class="card-list"><div class="card-i"><img src="images/elyctro.png" alt="Elyctro" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Elyctro</h3><p>لعبة منصات 3D برسوم قوية وبيئات غامرة</p><span class="card-tag">3D Platformer</span></div></div></div></div>`,
+                `<div class="pi"><div class="pic">📱</div><h2 class="pt">الأجهزة</h2><p class="ps">أجهزة ذكية للمؤسسات</p><div class="card-list"><div class="card-i"><img src="images/cubeos.png" alt="Cube OS" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Cube OS</h3><p>جهاز لوحي مع قارئ RFID مدمج</p><span class="card-tag">RFID</span></div></div><div class="card-i"><img src="images/ethion.png" alt="Ethion" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Ethion</h3><p>SPS — نظام طباعة آمن</p><span class="card-tag">SPS</span></div></div></div></div>`,
+                `<div class="pi"><div class="pic">⚙️</div><h2 class="pt">الخدمات والبرامج</h2><p class="ps">حلول تقنية متكاملة</p><div class="sg"><div class="sc"><div class="sic">🎥</div><h3>محتوى إعلاني 3D</h3></div><div class="sc"><div class="sic">🎨</div><h3>تصاميم سوشيال ميديا</h3></div><div class="sc"><div class="sic">🥽</div><h3>واقع افتراضي VR</h3></div><div class="sc"><div class="sic">🏗️</div><h3>محاكاة أبنية</h3></div><div class="sc"><div class="sic">💻</div><h3>صناعة البرمجيات</h3></div><div class="sc"><div class="sic">🔧</div><h3>استشارات تقنية</h3></div></div><p class="pft">جميع الخدمات متوفرة ✅</p></div>`,
+                `<div class="pi"><img src="images/logo.png" alt="Cube Studios" class="logo-img" onerror="this.style.display='none'"><div class="pic">⬡</div><h2 class="pt">عن Cube Studios</h2><p class="ps">مطور Solo يصنع الفرق</p><p class="pd">شركة تقنية عراقية متخصصة في الألعاب والأجهزة والبرمجيات. أديرها بنفسي.</p><div class="vals"><div class="val"><span>💎</span>إبداع</div><div class="val"><span>⚡</span>جودة</div><div class="val"><span>🎯</span>دقة</div><div class="val"><span>🚀</span>طموح</div></div><p class="pft">🇮🇶 العراق</p></div>`,
                 `<div class="pi"><div class="pic">📧</div><h2 class="pt">اتصل بنا</h2><p class="ps">نحن في انتظارك</p><div class="clinks"><a href="mailto:cubegames.iraq@gmail.com" class="clink">📧 cubegames.iraq@gmail.com</a><a href="tel:+9647711618255" class="clink">📱 +964 7711618255</a><a href="https://wa.me/9647711618255" class="clink">💬 واتساب</a><a href="https://facebook.com/Cubestudio.iq" target="_blank" class="clink">📘 فيسبوك</a><a href="https://youtube.com/@studios_cube" target="_blank" class="clink">🎥 يوتيوب</a></div><form class="cf" onsubmit="event.preventDefault();alert('شكراً لتواصلك! سنرد عليك قريباً.');"><div class="fg"><input type="text" placeholder="الاسم الكامل"></div><div class="fg"><input type="email" placeholder="البريد الإلكتروني"></div><div class="fg"><textarea placeholder="رسالتك..." rows="3"></textarea></div><button type="submit" class="pbtn sbtn">🚀 أرسل الرسالة</button></form></div>`
             ];
             const en = [
                 `<div class="pi"><img src="images/logo.png" alt="Cube Studios" class="logo-img" onerror="this.style.display='none'"><div class="pic">🏠</div><h2 class="pt">Cube Studios</h2><p class="ps">Integrated Creative Studio</p><p class="pd">Advanced games, innovative hardware, professional software.</p><div class="pst"><div class="st"><span class="sn">+5</span><span class="sl">Years Exp</span></div><div class="st"><span class="sn">Elyctro</span><span class="sl">3D Game</span></div><div class="st"><span class="sn">2</span><span class="sl">Devices</span></div></div><p class="pft">🇮🇶 Iraq</p></div>`,
-                `<div class="pi"><div class="pic">🎮</div><h2 class="pt">Games</h2><p class="ps">Immersive Worlds</p><div class="card-list"><div class="card-i"><img src="images/elyctro.png" alt="Elyctro" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Elyctro</h3><p>Advanced 3D platformer with powerful graphics</p><span class="card-tag">3D Platformer</span></div></div></div><p class="pft">More games coming soon</p></div>`,
-                `<div class="pi"><div class="pic">📱</div><h2 class="pt">Hardware</h2><p class="ps">Enterprise Smart Devices</p><div class="card-list"><div class="card-i"><img src="images/cubeos.png" alt="Cube OS" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Cube OS</h3><p>Advanced tablet with built-in RFID reader</p><span class="card-tag">RFID</span></div></div><div class="card-i"><img src="images/ethion.png" alt="Ethion" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Ethion</h3><p>SPS — Secure Printing System</p><span class="card-tag">SPS</span></div></div></div></div>`,
-                `<div class="pi"><div class="pic">⚙️</div><h2 class="pt">Services & Software</h2><p class="ps">Complete Tech Solutions</p><div class="sg"><div class="sc"><div class="sic">🎥</div><h3>3D Ad Content</h3><p>Videos & Characters</p></div><div class="sc"><div class="sic">🎨</div><h3>Social Media Design</h3><p>Posts & Identity</p></div><div class="sc"><div class="sic">🥽</div><h3>Virtual Reality VR</h3><p>Interactive Experiences</p></div><div class="sc"><div class="sic">🏗️</div><h3>Building Simulation</h3><p>Pre-construction Tours</p></div><div class="sc"><div class="sic">💻</div><h3>Software Dev</h3><p>Custom Solutions</p></div><div class="sc"><div class="sic">🔧</div><h3>Tech Consulting</h3><p>Enterprise Solutions</p></div></div><p class="pft">All services available ✅</p></div>`,
-                `<div class="pi"><img src="images/logo.png" alt="Cube Studios" class="logo-img" onerror="this.style.display='none'"><div class="pic">⬡</div><h2 class="pt">About Cube Studios</h2><p class="ps">A Solo Developer</p><p class="pd">Iraqi tech company specializing in games, hardware, and software. I run it alone — passionate about tech and creativity.</p><div class="vals"><div class="val"><span>💎</span>Creativity</div><div class="val"><span>⚡</span>Quality</div><div class="val"><span>🎯</span>Precision</div><div class="val"><span>🚀</span>Ambition</div></div><p class="pft">🇮🇶 Iraq</p></div>`,
+                `<div class="pi"><div class="pic">🎮</div><h2 class="pt">Games</h2><p class="ps">Immersive Worlds</p><div class="card-list"><div class="card-i"><img src="images/elyctro.png" alt="Elyctro" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Elyctro</h3><p>Advanced 3D platformer with powerful graphics</p><span class="card-tag">3D Platformer</span></div></div></div></div>`,
+                `<div class="pi"><div class="pic">📱</div><h2 class="pt">Hardware</h2><p class="ps">Enterprise Smart Devices</p><div class="card-list"><div class="card-i"><img src="images/cubeos.png" alt="Cube OS" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Cube OS</h3><p>Tablet with built-in RFID reader</p><span class="card-tag">RFID</span></div></div><div class="card-i"><img src="images/ethion.png" alt="Ethion" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Ethion</h3><p>SPS — Secure Printing System</p><span class="card-tag">SPS</span></div></div></div></div>`,
+                `<div class="pi"><div class="pic">⚙️</div><h2 class="pt">Services & Software</h2><p class="ps">Complete Tech Solutions</p><div class="sg"><div class="sc"><div class="sic">🎥</div><h3>3D Ad Content</h3></div><div class="sc"><div class="sic">🎨</div><h3>Social Media Design</h3></div><div class="sc"><div class="sic">🥽</div><h3>Virtual Reality VR</h3></div><div class="sc"><div class="sic">🏗️</div><h3>Building Simulation</h3></div><div class="sc"><div class="sic">💻</div><h3>Software Dev</h3></div><div class="sc"><div class="sic">🔧</div><h3>Tech Consulting</h3></div></div><p class="pft">All services available ✅</p></div>`,
+                `<div class="pi"><img src="images/logo.png" alt="Cube Studios" class="logo-img" onerror="this.style.display='none'"><div class="pic">⬡</div><h2 class="pt">About Cube Studios</h2><p class="ps">A Solo Developer</p><p class="pd">Iraqi tech company for games, hardware, and software. I run it alone.</p><div class="vals"><div class="val"><span>💎</span>Creativity</div><div class="val"><span>⚡</span>Quality</div><div class="val"><span>🎯</span>Precision</div><div class="val"><span>🚀</span>Ambition</div></div><p class="pft">🇮🇶 Iraq</p></div>`,
                 `<div class="pi"><div class="pic">📧</div><h2 class="pt">Contact Us</h2><p class="ps">We're Waiting</p><div class="clinks"><a href="mailto:cubegames.iraq@gmail.com" class="clink">📧 cubegames.iraq@gmail.com</a><a href="tel:+9647711618255" class="clink">📱 +964 7711618255</a><a href="https://wa.me/9647711618255" class="clink">💬 WhatsApp</a><a href="https://facebook.com/Cubestudio.iq" target="_blank" class="clink">📘 Facebook</a><a href="https://youtube.com/@studios_cube" target="_blank" class="clink">🎥 YouTube</a></div><form class="cf" onsubmit="event.preventDefault();alert('Thank you! We will reply soon.');"><div class="fg"><input type="text" placeholder="Full Name"></div><div class="fg"><input type="email" placeholder="Email"></div><div class="fg"><textarea placeholder="Your Message..." rows="3"></textarea></div><button type="submit" class="pbtn sbtn">🚀 Send Message</button></form></div>`
             ];
             return (cl === 'ar' ? ar : en)[idx] || '';
@@ -1437,11 +1305,14 @@
 
         function toggleMesoMode() {
             mesoMode = !mesoMode;
-            const mesoBtnEl = getMesoBtn();
+            [mesoBtn, mesoBtnDesk].forEach(b => {
+                if (!b) return;
+                if (mesoMode) { b.classList.add('active');
+                    b.innerHTML = '🏛️ Modern'; } else { b.classList.remove('active');
+                    b.innerHTML = '🏛️ Mesopotamia'; }
+            });
             if (mesoMode) {
                 document.body.classList.add('meso');
-                if (mesoBtnEl) { mesoBtnEl.classList.add('active');
-                    mesoBtnEl.innerHTML = '🏛️ Modern'; }
                 scene.background = new THREE.Color(0x1a0f00);
                 scene.fog = new THREE.FogExp2(0x1a0f00, 0.0002);
                 ambLight.color.set(0x3d2b00);
@@ -1456,8 +1327,6 @@
                 cuneiformBg.classList.add('vis');
             } else {
                 document.body.classList.remove('meso');
-                if (mesoBtnEl) { mesoBtnEl.classList.remove('active');
-                    mesoBtnEl.innerHTML = '🏛️ Mesopotamia'; }
                 scene.background = new THREE.Color(0x000510);
                 scene.fog = new THREE.FogExp2(0x000510, 0.00015);
                 ambLight.color.set(0x1a1a3e);
@@ -1562,7 +1431,6 @@
 
             container.addEventListener('touchstart', (e) => {
                 if (e.touches.length === 1) {
-                    e.preventDefault();
                     ia();
                     it = true;
                     touchMoved = false;
@@ -1572,22 +1440,21 @@
                     tpCurrent.x = e.touches[0].clientX;
                     tpCurrent.y = e.touches[0].clientY;
                 }
-            }, { passive: false });
+            }, { passive: true });
 
             container.addEventListener('touchmove', (e) => {
                 if (it && e.touches.length === 1) {
-                    e.preventDefault();
                     const dx = e.touches[0].clientX - tpCurrent.x;
                     const dy = e.touches[0].clientY - tpCurrent.y;
                     const totalDx = e.touches[0].clientX - tpStart.x;
                     const totalDy = e.touches[0].clientY - tpStart.y;
-                    if (Math.abs(totalDx) > 8 || Math.abs(totalDy) > 8) touchMoved = true;
+                    if (Math.abs(totalDx) > 10 || Math.abs(totalDy) > 10) touchMoved = true;
                     mc.rotation.y += dx * 0.005;
                     mc.rotation.x += dy * 0.005;
                     tpCurrent.x = e.touches[0].clientX;
                     tpCurrent.y = e.touches[0].clientY;
                 }
-            }, { passive: false });
+            }, { passive: true });
 
             container.addEventListener('touchend', (e) => {
                 if (!touchMoved && it) {
@@ -1607,32 +1474,20 @@
             cpBtn.addEventListener('click', (e) => { e.stopPropagation();
                 closePanel(); });
 
-            function addBtnListeners() {
-                const lBtn = getLangBtn();
-                const mBtn = getMesoBtn();
-                if (lBtn) {
-                    lBtn.replaceWith(lBtn.cloneNode(true));
-                    const newLBtn = document.getElementById(lBtn.id);
-                    newLBtn.addEventListener('click', (e) => { e.stopPropagation();
-                        cl = cl === 'ar' ? 'en' : 'ar';
-                        updateAllLangBtns();
-                        ulu();
-                        ofs(cf); });
-                }
-                if (mBtn) {
-                    mBtn.replaceWith(mBtn.cloneNode(true));
-                    const newMBtn = document.getElementById(mBtn.id);
-                    newMBtn.addEventListener('click', (e) => { e.stopPropagation();
-                        toggleMesoMode(); });
-                }
-            }
-
-            function updateAllLangBtns() {
-                [lt, ltDesk].forEach(b => { if (b) b.textContent = cl === 'ar' ? 'EN' : 'AR'; });
-            }
-            updateAllLangBtns();
-            addBtnListeners();
-            window.addEventListener('resize', addBtnListeners);
+            if (lt) lt.addEventListener('click', (e) => { e.stopPropagation();
+                cl = cl === 'ar' ? 'en' : 'ar';
+                [lt, ltDesk].forEach(x => { if (x) x.textContent = cl === 'ar' ? 'EN' : 'AR'; });
+                ulu();
+                ofs(cf); });
+            if (ltDesk) ltDesk.addEventListener('click', (e) => { e.stopPropagation();
+                cl = cl === 'ar' ? 'en' : 'ar';
+                [lt, ltDesk].forEach(x => { if (x) x.textContent = cl === 'ar' ? 'EN' : 'AR'; });
+                ulu();
+                ofs(cf); });
+            if (mesoBtn) mesoBtn.addEventListener('click', (e) => { e.stopPropagation();
+                toggleMesoMode(); });
+            if (mesoBtnDesk) mesoBtnDesk.addEventListener('click', (e) => { e.stopPropagation();
+                toggleMesoMode(); });
 
             document.addEventListener('keydown', (e) => {
                 if (['1', '2', '3', '4', '5', '6'].includes(e.key)) ofs(parseInt(e.key) - 1);
@@ -1651,10 +1506,8 @@
             });
         }
 
-        function closePanel() {
-            pn.classList.remove('vis');
-            shiftCube(false);
-        }
+        function closePanel() { pn.classList.remove('vis');
+            shiftCube(false); }
 
         function ulu() { nl.forEach(l => { l.textContent = cl === 'ar' ? l.dataset.ar : l.dataset.en; }); }
 
@@ -1711,14 +1564,12 @@
         }
 
         window.addEventListener('resize', () => {
-            const w = container.clientWidth,
-                h = container.clientHeight;
-            cam.aspect = w / h;
+            cam.aspect = window.innerWidth / window.innerHeight;
             cam.updateProjectionMatrix();
-            rnd.setSize(w, h);
-            comp.setSize(w, h);
-            blm.resolution.set(w, h);
-            cam.position.z = w < 768 ? 10 : 8;
+            rnd.setSize(window.innerWidth, window.innerHeight);
+            comp.setSize(window.innerWidth, window.innerHeight);
+            blm.resolution.set(window.innerWidth, window.innerHeight);
+            cam.position.z = window.innerWidth < 768 ? 10 : 8;
             cam.lookAt(0, 0, 0);
         });
 
@@ -1727,7 +1578,7 @@
         function startBgMusic() {
             if (!ac || bgMusic) return;
             bgMusic = ac.createGain();
-            bgMusic.gain.value = 0.06;
+            bgMusic.gain.value = 0.05;
             bgMusic.connect(ac.destination);
             const osc1 = ac.createOscillator();
             const osc2 = ac.createOscillator();
