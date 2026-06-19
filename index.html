@@ -44,7 +44,7 @@
             height: 100dvh;
             width: 100vw;
             position: fixed;
-            touch-action: none;
+            touch-action: pan-x pan-y;
             -webkit-user-select: none;
             user-select: none;
             transition: background 1.5s ease;
@@ -173,6 +173,12 @@
             z-index: 50;
             transform: translate(-50%, -50%);
             opacity: 0;
+            display: none;
+        }
+        @media(min-width:768px) {
+            #glow {
+                display: block;
+            }
         }
         #dn {
             position: fixed;
@@ -215,6 +221,11 @@
         .nh {
             color: var(--pg);
         }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
         .nl {
             list-style: none;
             display: flex;
@@ -246,6 +257,63 @@
             background: var(--pg);
             border-radius: 1px;
         }
+        .top-btns {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 300;
+            display: flex;
+            gap: 0.5rem;
+        }
+        #lt {
+            background: rgba(124, 58, 237, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font2);
+            font-size: 0.8rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        #lt:hover {
+            background: rgba(124, 58, 237, 0.5);
+        }
+        #meso-btn {
+            background: linear-gradient(135deg, #d4a017, #8b6914);
+            border: 1px solid rgba(212, 160, 23, 0.5);
+            color: #1a0f00;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font);
+            font-size: 0.75rem;
+            font-weight: 700;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            animation: gpulse 2s infinite;
+            white-space: nowrap;
+        }
+        @keyframes gpulse {
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(212, 160, 23, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(240, 199, 94, 0.6);
+            }
+        }
+        #meso-btn:hover {
+            background: linear-gradient(135deg, #f0c75e, #d4a017);
+            transform: scale(1.05);
+        }
+        #meso-btn.active {
+            background: linear-gradient(135deg, #7c3aed, #06b6d4);
+            border-color: rgba(124, 58, 237, 0.5);
+            color: #fff;
+            animation: none;
+        }
         #mb {
             position: fixed;
             bottom: 0;
@@ -275,6 +343,7 @@
             transition: all 0.3s var(--ease);
             min-width: 56px;
             animation: fiu 0.6s var(--spring) both;
+            -webkit-tap-highlight-color: transparent;
         }
         .mbb:nth-child(1) {
             animation-delay: 0s;
@@ -357,65 +426,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 10;
         }
         #cp:hover {
             background: rgba(255, 255, 255, 0.2);
-        }
-        #lt {
-            position: fixed;
-            top: 1rem;
-            right: 4.5rem;
-            z-index: 300;
-            background: rgba(124, 58, 237, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: var(--font2);
-            font-size: 0.8rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-        }
-        #lt:hover {
-            background: rgba(124, 58, 237, 0.5);
-        }
-        #meso-btn {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            z-index: 300;
-            background: linear-gradient(135deg, #d4a017, #8b6914);
-            border: 1px solid rgba(212, 160, 23, 0.5);
-            color: #1a0f00;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: var(--font);
-            font-size: 0.75rem;
-            font-weight: 700;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-            animation: gpulse 2s infinite;
-        }
-        @keyframes gpulse {
-            0%,
-            100% {
-                box-shadow: 0 0 15px rgba(212, 160, 23, 0.3);
-            }
-            50% {
-                box-shadow: 0 0 30px rgba(240, 199, 94, 0.6);
-            }
-        }
-        #meso-btn:hover {
-            background: linear-gradient(135deg, #f0c75e, #d4a017);
-            transform: scale(1.05);
-        }
-        #meso-btn.active {
-            background: linear-gradient(135deg, #7c3aed, #06b6d4);
-            border-color: rgba(124, 58, 237, 0.5);
-            color: #fff;
-            animation: none;
         }
         #wa {
             position: fixed;
@@ -754,15 +768,15 @@
                 border-radius: 16px;
                 max-height: 60vh;
             }
-            #lt {
-                right: 4rem;
-                font-size: 0.7rem;
-                padding: 0.4rem 0.7rem;
+            .top-btns {
+                top: 0.5rem;
+                left: 0.5rem;
+                gap: 0.3rem;
             }
+            #lt,
             #meso-btn {
                 font-size: 0.65rem;
-                padding: 0.4rem 0.7rem;
-                right: 0.5rem;
+                padding: 0.35rem 0.6rem;
             }
         }
         @media(min-width:375px) and (max-width:767px) {
@@ -782,6 +796,10 @@
             }
             #wa {
                 bottom: calc(var(--mh) + 1.5rem);
+            }
+            .top-btns {
+                top: 0.75rem;
+                left: 0.75rem;
             }
         }
         @media(min-width:768px) and (max-width:1023px) {
@@ -808,6 +826,10 @@
             }
             #c.shifted {
                 transform: translateX(20%);
+            }
+            .top-btns {
+                top: 1rem;
+                left: 1rem;
             }
         }
         @media(min-width:1024px) {
@@ -855,8 +877,10 @@
         <p class="ltx">CUBE <span>STUDIOS</span></p>
         <div class="lbar"><div class="lprog"></div></div>
     </div>
-    <button id="lt">EN</button>
-    <button id="meso-btn">🏛️ Mesopotamia</button>
+    <div class="top-btns">
+        <button id="lt">EN</button>
+        <button id="meso-btn">🏛️ Mesopotamia</button>
+    </div>
     <a id="wa" href="https://wa.me/9647711618255" target="_blank" title="واتساب">
         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     </a>
@@ -892,7 +916,6 @@
         let cl = 'ar';
         let mesoMode = false;
         const cc = document.getElementById('cc');
-        const ct = document.getElementById('c');
         const container = document.getElementById('c');
         const ls = document.getElementById('load');
         const pn = document.getElementById('pn');
@@ -946,12 +969,12 @@
         scene.background = new THREE.Color(0x000510);
         scene.fog = new THREE.FogExp2(0x000510, 0.00015);
 
-        const cam = new THREE.PerspectiveCamera(45, ct.clientWidth / ct.clientHeight, 0.1, 100);
+        const cam = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
         cam.position.set(0, 1.5, 8);
         cam.lookAt(0, 0, 0);
 
         const rnd = new THREE.WebGLRenderer({ canvas: cc, antialias: true, alpha: true, powerPreference: 'high-performance' });
-        rnd.setSize(ct.clientWidth, ct.clientHeight);
+        rnd.setSize(container.clientWidth, container.clientHeight);
         rnd.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         rnd.toneMapping = THREE.ACESFilmicToneMapping;
         rnd.toneMappingExposure = 1.2;
@@ -959,7 +982,7 @@
 
         const comp = new EffectComposer(rnd);
         comp.addPass(new RenderPass(scene, cam));
-        const blm = new UnrealBloomPass(new THREE.Vector2(ct.clientWidth, ct.clientHeight), 0.5, 0.4, 0.85);
+        const blm = new UnrealBloomPass(new THREE.Vector2(container.clientWidth, container.clientHeight), 0.5, 0.4, 0.85);
         comp.addPass(blm);
         const rgb = new ShaderPass(RGBShiftShader);
         rgb.uniforms['amount'].value = 0.0015;
@@ -986,7 +1009,6 @@
         stars.name = 'stars';
         scene.add(stars);
 
-        // Ziggurat particles (hidden by default)
         const zigGeo = new THREE.BufferGeometry();
         const zigPos = new Float32Array(800 * 3);
         for (let i = 0; i < 800 * 3; i += 3) { zigPos[i] = (Math.random() - 0.5) * 30;
@@ -1311,10 +1333,11 @@
                             3 };
                     bg.add(p);
                 }
-            };return group;
-        }
+            };
 
-        function getContent(idx) {
+            return group;
+        }
+>function getContent(idx) {
             const ar = [
                 `<div class="pi"><img src="images/logo.png" alt="Cube Studios" class="logo-img" onerror="this.style.display='none'"><div class="pic">🏠</div><h2 class="pt">Cube Studios</h2><p class="ps">استوديو إبداعي متكامل</p><p class="pd">نصنع ألعاباً متطورة، أجهزة مبتكرة، وبرمجيات احترافية. نجمع بين الإبداع والتقنية لنقدم تجارب رقمية استثنائية.</p><div class="pst"><div class="st"><span class="sn">+5</span><span class="sl">سنوات خبرة</span></div><div class="st"><span class="sn">Elyctro</span><span class="sl">لعبة 3D</span></div><div class="st"><span class="sn">2</span><span class="sl">أجهزة</span></div></div><p class="pft">🇮🇶 العراق</p></div>`,
                 `<div class="pi"><div class="pic">🎮</div><h2 class="pt">الألعاب</h2><p class="ps">عوالم غامرة بتقنية متقدمة</p><div class="card-list"><div class="card-i"><img src="images/elyctro.png" alt="Elyctro" class="card-img" onerror="this.style.display='none'"><div class="card-info"><h3>Elyctro</h3><p>لعبة منصات ثلاثية الأبعاد متقدمة برسوم قوية وبيئات غامرة</p><span class="card-tag">3D Platformer</span></div></div></div><p class="pft">المزيد من الألعاب قيد التطوير</p></div>`,
@@ -1343,13 +1366,12 @@
             hf = null;
         let rv = { x: 0, y: 0 };
         let panelTimeout = null;
+        let lastTap = 0;
+        let tapStartPos = { x: 0, y: 0 };
 
         function shiftCube(shift) {
-            if (shift) {
-                container.classList.add('shifted');
-            } else {
-                container.classList.remove('shifted');
-            }
+            if (shift) container.classList.add('shifted');
+            else container.classList.remove('shifted');
         }
 
         function toggleMesoMode() {
@@ -1357,7 +1379,7 @@
             if (mesoMode) {
                 document.body.classList.add('meso');
                 mesoBtn.classList.add('active');
-                mesoBtn.textContent = '🏛️ Modern Mode';
+                mesoBtn.innerHTML = '🏛️ Modern';
                 scene.background = new THREE.Color(0x1a0f00);
                 scene.fog = new THREE.FogExp2(0x1a0f00, 0.0002);
                 ambLight.color.set(0x3d2b00);
@@ -1373,7 +1395,7 @@
             } else {
                 document.body.classList.remove('meso');
                 mesoBtn.classList.remove('active');
-                mesoBtn.textContent = '🏛️ Mesopotamia';
+                mesoBtn.innerHTML = '🏛️ Mesopotamia';
                 scene.background = new THREE.Color(0x000510);
                 scene.fog = new THREE.FogExp2(0x000510, 0.00015);
                 ambLight.color.set(0x1a1a3e);
@@ -1399,14 +1421,26 @@
                 setTimeout(() => ls.remove(), 800); }, 1500);
         }
 
+        function getMousePos(e) {
+            ms.x = (e.clientX / container.clientWidth) * 2 - 1;
+            ms.y = -(e.clientY / container.clientHeight) * 2 + 1;
+        }
+
+        function getTouchPos(touch) {
+            ms.x = (touch.clientX / container.clientWidth) * 2 - 1;
+            ms.y = -(touch.clientY / container.clientHeight) * 2 + 1;
+        }
+
         function si() {
-            ct.addEventListener('mousemove', (e) => {
-                ms.x = (e.clientX / ct.clientWidth) * 2 - 1;
-                ms.y = -(e.clientY / ct.clientHeight) * 2 + 1;
-                gl.style.left = e.clientX + 'px';
-                gl.style.top = e.clientY + 'px';
-                gl.style.opacity = '1';
-                if (idr) { const dx = e.clientX - pm.x,
+            container.addEventListener('mousemove', (e) => {
+                getMousePos(e);
+                if (window.innerWidth >= 768) {
+                    gl.style.left = e.clientX + 'px';
+                    gl.style.top = e.clientY + 'px';
+                    gl.style.opacity = '1';
+                }
+                if (idr) {
+                    const dx = e.clientX - pm.x,
                         dy = e.clientY - pm.y;
                     mc.rotation.y += dx * 0.005;
                     mc.rotation.x += dy * 0.005;
@@ -1414,57 +1448,130 @@
                     rv.x = dy * 0.005;
                     pm.x = e.clientX;
                     pm.y = e.clientY;
-                    ar2 = false; }
+                    ar2 = false;
+                }
                 ch();
             });
-            ct.addEventListener('mousedown', (e) => { ia();
+
+            container.addEventListener('mousedown', (e) => {
+                ia();
                 idr = true;
                 pm.x = e.clientX;
                 pm.y = e.clientY;
                 ar2 = false;
-                ct.style.cursor = 'grabbing'; });
-            ct.addEventListener('mouseup', () => { idr = false;
-                ct.style.cursor = 'grab';
-                setTimeout(() => { ar2 = true; }, 2000); });
-            ct.addEventListener('click', (e) => { if (Math.abs(e.clientX - pm.x) < 3 && Math.abs(e.clientY - pm.y) < 3) ck
-            (); });
-            ct.addEventListener('mouseleave', () => { gl.style.opacity = '0';
-                ct.style.cursor = 'default'; });
-            ct.addEventListener('mouseenter', () => { gl.style.opacity = '1';
-                ct.style.cursor = 'grab'; });
-            ct.addEventListener('wheel', (e) => { e.preventDefault();
-                cam.position.z += e.deltaY * 0.01;
-                cam.position.z = Math.max(4, Math.min(15, cam.position.z)); });
+                container.style.cursor = 'grabbing';
+                tapStartPos.x = e.clientX;
+                tapStartPos.y = e.clientY;
+            });
 
-            let tp = { x: 0, y: 0 },
-                it = false;
-            ct.addEventListener('touchstart', (e) => { if (e.touches.length === 1) { e.preventDefault();
+            container.addEventListener('mouseup', (e) => {
+                const dx = Math.abs(e.clientX - tapStartPos.x);
+                const dy = Math.abs(e.clientY - tapStartPos.y);
+                idr = false;
+                container.style.cursor = 'grab';
+                if (dx < 5 && dy < 5) {
+                    ck();
+                }
+                setTimeout(() => { ar2 = true; }, 2000);
+            });
+
+            container.addEventListener('click', (e) => {
+                if (Math.abs(e.clientX - pm.x) < 3 && Math.abs(e.clientY - pm.y) < 3) ck();
+            });
+
+            container.addEventListener('mouseleave', () => {
+                gl.style.opacity = '0';
+                container.style.cursor = 'default';
+                idr = false;
+            });
+
+            container.addEventListener('mouseenter', () => {
+                if (window.innerWidth >= 768) gl.style.opacity = '1';
+                container.style.cursor = 'grab';
+            });
+
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                cam.position.z += e.deltaY * 0.01;
+                cam.position.z = Math.max(4, Math.min(15, cam.position.z));
+            });
+
+            // ===== TOUCH EVENTS - FIXED =====
+            let it = false;
+            let tpStart = { x: 0, y: 0 };
+            let tpCurrent = { x: 0, y: 0 };
+            let touchMoved = false;
+
+            container.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    e.preventDefault();
                     ia();
                     it = true;
+                    touchMoved = false;
                     ar2 = false;
-                    tp.x = e.touches[0].clientX;
-                    tp.y = e.touches[0].clientY; } }, { passive: false });
-            ct.addEventListener('touchmove', (e) => { if (it && e.touches.length === 1) { e.preventDefault();
-                    const dx = e.touches[0].clientX - tp.x,
-                        dy = e.touches[0].clientY - tp.y;
+                    tpStart.x = e.touches[0].clientX;
+                    tpStart.y = e.touches[0].clientY;
+                    tpCurrent.x = e.touches[0].clientX;
+                    tpCurrent.y = e.touches[0].clientY;
+                }
+            }, { passive: false });
+
+            container.addEventListener('touchmove', (e) => {
+                if (it && e.touches.length === 1) {
+                    e.preventDefault();
+                    const dx = e.touches[0].clientX - tpCurrent.x;
+                    const dy = e.touches[0].clientY - tpCurrent.y;
+                    const totalDx = e.touches[0].clientX - tpStart.x;
+                    const totalDy = e.touches[0].clientY - tpStart.y;
+                    if (Math.abs(totalDx) > 8 || Math.abs(totalDy) > 8) {
+                        touchMoved = true;
+                    }
                     mc.rotation.y += dx * 0.005;
                     mc.rotation.x += dy * 0.005;
-                    tp.x = e.touches[0].clientX;
-                    tp.y = e.touches[0].clientY; } }, { passive: false });
-            ct.addEventListener('touchend', () => { it = false;
-                setTimeout(() => { ar2 = true; }, 2000); });
+                    tpCurrent.x = e.touches[0].clientX;
+                    tpCurrent.y = e.touches[0].clientY;
+                }
+            }, { passive: false });
 
-            mb.forEach(b => b.addEventListener('click', () => { ia();
-                ofs(parseInt(b.dataset.f)); }));
-            nl.forEach(l => l.addEventListener('click', (e) => { e.preventDefault();
+            container.addEventListener('touchend', (e) => {
+                if (!touchMoved && it) {
+                    getTouchPos({ clientX: tpStart.x, clientY: tpStart.y });
+                    ck();
+                }
+                it = false;
+                setTimeout(() => { ar2 = true; }, 2000);
+            });
+
+            mb.forEach(b => b.addEventListener('click', (e) => {
+                e.stopPropagation();
                 ia();
-                ofs(parseInt(l.dataset.f)); }));
-            cpBtn.addEventListener('click', closePanel);
-            lt.addEventListener('click', () => { cl = cl === 'ar' ? 'en' : 'ar';
+                ofs(parseInt(b.dataset.f));
+            }));
+
+            nl.forEach(l => l.addEventListener('click', (e) => {
+                e.preventDefault();
+                ia();
+                ofs(parseInt(l.dataset.f));
+            }));
+
+            cpBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closePanel();
+            });
+
+            lt.addEventListener('click', (e) => {
+                e.stopPropagation();
+                cl = cl === 'ar' ? 'en' : 'ar';
                 lt.textContent = cl === 'ar' ? 'EN' : 'AR';
                 ulu();
-                ofs(cf); });
-            mesoBtn.addEventListener('click', toggleMesoMode);
+                ofs(cf);
+            });
+
+            mesoBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMesoMode();
+            });
+
             document.addEventListener('keydown', (e) => {
                 if (['1', '2', '3', '4', '5', '6'].includes(e.key)) ofs(parseInt(e.key) - 1);
                 if (e.key === 'Escape') closePanel();
@@ -1486,9 +1593,6 @@
             pn.classList.remove('vis');
             shiftCube(false);
             if (panelTimeout) clearTimeout(panelTimeout);
-            panelTimeout = setTimeout(() => {
-                // cube returns to center via CSS transition
-            }, 100);
         }
 
         function ulu() { nl.forEach(l => { l.textContent = cl === 'ar' ? l.dataset.ar : l.dataset.en; }); }
@@ -1498,7 +1602,7 @@
             const ints = raycaster.intersectObjects(mc.children, true);
             const idx = ints.length > 0 ? Math.floor(ints[0].faceIndex / 2) : null;
             if (idx !== hf) { hf = idx;
-                ct.style.cursor = hf !== null ? 'pointer' : 'grab'; }
+                container.style.cursor = hf !== null ? 'pointer' : (window.innerWidth >= 768 ? 'grab' : 'default'); }
         }
 
         function ck() {
@@ -1547,8 +1651,8 @@
         }
 
         window.addEventListener('resize', () => {
-            const w = ct.clientWidth,
-                h = ct.clientHeight;
+            const w = container.clientWidth,
+                h = container.clientHeight;
             cam.aspect = w / h;
             cam.updateProjectionMatrix();
             rnd.setSize(w, h);
@@ -1620,4 +1724,4 @@
         });
     </script>
 </body>
-</html>
+</html
